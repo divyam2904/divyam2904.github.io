@@ -1,0 +1,2341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JEE 2027 Preparation Tracker</title>
+<style>
+/* ===== RESET & TOKENS ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:          #0c0e14;
+  --surface:     #13161f;
+  --surface2:    #1a1e2a;
+  --surface3:    #222636;
+  --border:      rgba(255,255,255,0.07);
+  --border2:     rgba(255,255,255,0.12);
+  --gold:        #f0b429;
+  --gold-dim:    rgba(240,180,41,0.12);
+  --gold-glow:   rgba(240,180,41,0.25);
+  --red:         #ef4444;
+  --red-dim:     rgba(239,68,68,0.12);
+  --blue:        #60a5fa;
+  --blue-dim:    rgba(96,165,250,0.12);
+  --green:       #34d399;
+  --green-dim:   rgba(52,211,153,0.12);
+  --purple:      #a78bfa;
+  --purple-dim:  rgba(167,139,250,0.12);
+  --text:        #e8eaf0;
+  --text2:       #9499b0;
+  --text3:       #5a6080;
+  --radius:      12px;
+  --radius-sm:   8px;
+  --radius-lg:   16px;
+  --shadow:      0 4px 24px rgba(0,0,0,0.4);
+  --shadow-sm:   0 2px 8px rgba(0,0,0,0.3);
+  --transition:  0.18s cubic-bezier(0.4,0,0.2,1);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+/* ===== HEADER ===== */
+header {
+  background: linear-gradient(135deg, #0a0c14 0%, #111627 40%, #0d1220 100%);
+  border-bottom: 1px solid var(--border2);
+  padding: 28px 20px 24px;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+header::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: 30%;
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(96,165,250,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+.header-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--gold-dim);
+  border: 1px solid rgba(240,180,41,0.3);
+  color: var(--gold);
+  font-size: 10.5px; font-weight: 700; letter-spacing: 1px;
+  padding: 4px 12px; border-radius: 20px;
+  text-transform: uppercase; margin-bottom: 14px;
+}
+.header-pill::before { content: '⚡'; font-size: 10px; }
+header h1 {
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 800; letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #fff 30%, #c8cfe8 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 8px;
+}
+header h1 .accent {
+  background: linear-gradient(135deg, var(--gold) 0%, #fbbf24 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+header p { color: var(--text2); font-size: 13px; max-width: 560px; line-height: 1.6; }
+
+/* HEADER STATS ROW */
+.header-stats {
+  display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;
+}
+.hstat {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.hstat .hn { font-size: 18px; font-weight: 800; color: var(--gold); }
+.hstat .hl { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ===== NAV ===== */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,14,20,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex; overflow-x: auto; gap: 2px; padding: 0 12px;
+  -webkit-overflow-scrolling: touch;
+}
+nav::-webkit-scrollbar { height: 0; }
+nav button {
+  flex: none; border: none; background: none;
+  font-family: inherit; font-size: 12.5px; font-weight: 600;
+  color: var(--text3); padding: 14px 16px;
+  cursor: pointer; border-bottom: 2px solid transparent;
+  white-space: nowrap; transition: color var(--transition), border-color var(--transition);
+  position: relative;
+}
+nav button:hover { color: var(--text); }
+nav button.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ===== WRAP ===== */
+.wrap { max-width: 900px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* ===== VIEWS ===== */
+.view { display: none; animation: fadeIn 0.2s ease; }
+.view.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== TYPOGRAPHY ===== */
+h2.sec {
+  font-size: 20px; font-weight: 800; letter-spacing: -0.3px;
+  color: var(--text); margin: 24px 0 6px;
+  display: flex; align-items: center; gap: 10px;
+}
+h2.sec::before {
+  content: ''; width: 4px; height: 22px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+  border-radius: 2px; flex-shrink: 0;
+}
+h3.grp {
+  font-size: 11px; font-weight: 700; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 1px;
+  margin: 24px 0 10px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+h3.grp .gp {
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text2); font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 10px;
+}
+p.intro { color: var(--text2); font-size: 13px; margin-bottom: 20px; line-height: 1.65; }
+
+/* ===== DASHBOARD CARDS ===== */
+.dash {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 10px; margin: 16px 0 24px;
+}
+@media(max-width:600px){ .dash{grid-template-columns:repeat(2,1fr);} }
+.dash .card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 14px; text-align: center;
+  transition: border-color var(--transition), transform var(--transition);
+  position: relative; overflow: hidden;
+}
+.dash .card::before {
+  content: ''; position: absolute;
+  inset: 0; opacity: 0;
+  background: radial-gradient(circle at 50% 0%, var(--gold-glow), transparent 70%);
+  transition: opacity var(--transition);
+}
+.dash .card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.dash .card:hover::before { opacity: 1; }
+.dash .card .big {
+  font-size: 26px; font-weight: 800;
+  background: linear-gradient(135deg, var(--gold), #fbbf24);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.dash .card .lab { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 3px; }
+
+/* PROGRESS BARS */
+.pbar-row { margin-bottom: 12px; }
+.pbar-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.pbar-label span:first-child { font-size: 12.5px; font-weight: 600; color: var(--text2); }
+.pbar-label .pbar-count { font-size: 11px; color: var(--text3); font-weight: 600; }
+.pbar-outer {
+  background: var(--surface2); border-radius: 6px; height: 6px; overflow: hidden;
+}
+.pbar-inner {
+  height: 6px; border-radius: 6px;
+  background: linear-gradient(90deg, var(--gold), var(--green));
+  transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+.pbar-inner::after {
+  content: ''; position: absolute; right: 0; top: -1px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 6px var(--green);
+}
+
+/* ===== BOXES ===== */
+.box {
+  border-radius: var(--radius);
+  padding: 14px 16px; margin: 12px 0;
+  font-size: 13px; line-height: 1.65;
+  border: 1px solid;
+}
+.box h5 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.box ul { padding-left: 16px; margin-top: 6px; }
+.box ul li { margin-bottom: 4px; font-size: 12.5px; }
+.box a { font-weight: 700; text-decoration: none; }
+.box a:hover { text-decoration: underline; }
+.box.gold  { background: var(--gold-dim);   border-color: rgba(240,180,41,0.25); color: #e8d88a; }
+.box.gold h5 { color: var(--gold); }
+.box.blue  { background: var(--blue-dim);   border-color: rgba(96,165,250,0.25); color: #a0c4f8; }
+.box.blue h5 { color: var(--blue); }
+.box.red   { background: var(--red-dim);    border-color: rgba(239,68,68,0.25);  color: #f5a3a3; }
+.box.red h5 { color: var(--red); }
+.box.green { background: var(--green-dim);  border-color: rgba(52,211,153,0.25); color: #80d9b8; }
+.box.green h5 { color: var(--green); }
+.box.surface { background: var(--surface);  border-color: var(--border2);        color: var(--text2); }
+.box.surface h5 { color: var(--text); }
+
+/* ===== TAGS ===== */
+.tag {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 8.5px; font-weight: 800; padding: 2px 7px;
+  border-radius: 6px; letter-spacing: 0.5px; flex: none;
+}
+.tag.high { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.25); }
+.tag.mid  { background: rgba(240,180,41,0.15); color: var(--gold); border: 1px solid rgba(240,180,41,0.25); }
+.tag.low  { background: rgba(96,165,250,0.15); color: #93c5fd; border: 1px solid rgba(96,165,250,0.25); }
+
+/* ===== CHAPTER CARD ===== */
+.ch-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 8px; overflow: hidden;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.ch-card:hover { border-color: var(--border2); }
+
+.ch-main {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; cursor: pointer;
+  transition: background var(--transition);
+}
+.ch-main:hover { background: var(--surface2); }
+.ch-main.done { background: rgba(52,211,153,0.04); }
+
+/* Checkbox */
+.chk {
+  width: 20px; height: 20px; border-radius: 6px;
+  border: 1.5px solid var(--border2);
+  flex: none; display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: #fff; font-weight: 900;
+  transition: all var(--transition); flex-shrink: 0;
+  background: transparent;
+}
+.done .chk {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  border-color: #34d399;
+  box-shadow: 0 0 8px rgba(52,211,153,0.3);
+}
+.done .chk::after { content: "✓"; }
+
+.ch-name {
+  flex: 1; font-size: 13.3px; font-weight: 600;
+  color: var(--text); transition: color var(--transition);
+}
+.done .ch-name { color: var(--text3); text-decoration: line-through; text-decoration-color: var(--text3); }
+
+.pbadge {
+  font-size: 10px; font-weight: 700; color: var(--text3);
+  background: var(--surface3); padding: 1px 6px; border-radius: 6px;
+  margin-left: 6px;
+}
+.done .pbadge { background: var(--green-dim); color: var(--green); }
+
+.ch-weight {
+  font-size: 11px; font-weight: 700; color: var(--text3);
+  width: 38px; text-align: right; flex: none;
+}
+
+.ch-toggle {
+  font-size: 14px; color: var(--text3); padding: 0 4px;
+  flex: none; transition: transform var(--transition), color var(--transition);
+  user-select: none;
+}
+.ch-toggle:hover { color: var(--gold); }
+.open-toggle { transform: rotate(90deg); color: var(--gold); }
+
+/* ===== DETAIL PANEL ===== */
+.ch-detail { display: none; }
+.ch-detail.open { display: block; }
+
+/* Subtopics */
+.subtopics {
+  padding: 4px 14px 8px 44px;
+  border-top: 1px solid var(--border);
+  background: rgba(0,0,0,0.15);
+}
+.subtopic {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  cursor: pointer; transition: background var(--transition);
+  border-radius: 4px; padding-left: 4px; padding-right: 4px;
+}
+.subtopic:last-child { border-bottom: none; }
+.subtopic:hover { background: var(--surface2); }
+.sub-chk {
+  width: 14px; height: 14px; border: 1.5px solid var(--border2);
+  border-radius: 3px; flex: none; margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: #fff; transition: all var(--transition); flex-shrink: 0;
+}
+.subtopic.done .sub-chk { background: var(--green); border-color: var(--green); }
+.subtopic.done .sub-chk::after { content: "✓"; }
+.subtopic span { font-size: 12.3px; color: var(--text2); line-height: 1.5; }
+.subtopic.done span { color: var(--text3); text-decoration: line-through; }
+
+/* Study guide */
+.study-guide {
+  padding: 16px; border-top: 1px solid var(--border);
+  background: rgba(240,180,41,0.03);
+  display: grid; gap: 12px;
+}
+.sg-row { font-size: 12.3px; }
+.sg-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.8px; color: var(--text3); margin-bottom: 4px; display: block;
+}
+.sg-text { color: var(--text2); line-height: 1.6; }
+.sg-pills { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 4px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px; border: 1px solid;
+}
+.pill.bk { background: rgba(251,191,36,0.1); color: #fbbf24; border-color: rgba(251,191,36,0.25); }
+.pill.yt { background: rgba(239,68,68,0.1);  color: #f87171;  border-color: rgba(239,68,68,0.25); }
+.tip-box {
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius-sm); padding: 10px 12px;
+  font-size: 12px; color: var(--text2); line-height: 1.6;
+}
+.tip-box b { color: var(--gold); }
+
+/* ===== PHASE CARDS ===== */
+.phase {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius); margin-bottom: 10px; overflow: hidden;
+  transition: border-color var(--transition);
+}
+.phase:hover { border-color: var(--border2); }
+.phase-head {
+  background: var(--surface2);
+  padding: 14px 16px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; transition: background var(--transition);
+}
+.phase-head:hover { background: var(--surface3); }
+.phase-head-left { display: flex; align-items: center; gap: 10px; }
+.pstatus {
+  font-size: 9.5px; font-weight: 800; padding: 3px 9px; border-radius: 10px;
+  background: var(--surface3); color: var(--text3); flex: none;
+}
+.pstatus.done-badge { background: var(--green-dim); color: var(--green); }
+.phase-name { font-size: 13.5px; font-weight: 700; color: var(--text); }
+.pdates { font-size: 11px; color: var(--gold); font-weight: 600; flex: none; white-space: nowrap; }
+.phase-body { padding: 12px 16px 16px; }
+.ptarget {
+  background: var(--green-dim); border: 1px solid rgba(52,211,153,0.2);
+  border-radius: var(--radius-sm); padding: 8px 12px;
+  font-size: 12px; color: #80d9b8; margin-bottom: 12px; line-height: 1.5;
+}
+.ptarget b { color: var(--green); }
+.ptask {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+  cursor: pointer; transition: background var(--transition);
+  border-radius: 4px; padding-left: 4px; padding-right: 4px;
+}
+.ptask:last-child { border-bottom: none; }
+.ptask:hover { background: var(--surface2); }
+.ptask.done span { color: var(--text3); text-decoration: line-through; }
+.ptask span { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+/* ===== CALENDAR GRID ===== */
+.cal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin: 16px 0; }
+.cal-month { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.cal-month .cm-head { background: var(--surface3); padding: 8px 12px; font-size: 12px; font-weight: 800; color: var(--gold); }
+.cal-month .cm-body { padding: 8px 12px; font-size: 11.5px; color: var(--text2); line-height: 1.6; }
+.cal-month .cm-body b { color: var(--red); }
+
+/* ===== TIMETABLE ===== */
+.day-block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.day-block h4 { padding: 12px 16px; font-size: 13.5px; font-weight: 700; color: var(--text); background: var(--surface2); border-bottom: 1px solid var(--border); }
+.slot { display: flex; gap: 12px; font-size: 12.8px; padding: 9px 16px; border-bottom: 1px solid var(--border); transition: background var(--transition); }
+.slot:last-child { border-bottom: none; }
+.slot:hover { background: var(--surface2); }
+.slot .time { flex: none; width: 110px; color: var(--gold); font-weight: 700; font-size: 11px; }
+.slot .desc { color: var(--text2); }
+.slot .desc b { color: var(--text); }
+
+/* ===== TABLES ===== */
+.rtable { width: 100%; border-collapse: collapse; margin: 8px 0 16px; font-size: 12.5px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+.rtable th { background: var(--surface3); color: var(--text2); text-align: left; padding: 10px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+.rtable td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text2); }
+.rtable tr:last-child td { border-bottom: none; }
+.rtable tr:hover td { background: var(--surface2); }
+
+/* ===== ERROR LOG ===== */
+.log-form {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 20px;
+}
+.log-form label {
+  display: block; font-size: 10.5px; font-weight: 700;
+  color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 5px;
+}
+.log-form input, .log-form select, .log-form textarea {
+  width: 100%; padding: 10px 12px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: var(--radius-sm); font-family: inherit; font-size: 13px;
+  color: var(--text); margin-bottom: 12px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+}
+.log-form input:focus, .log-form select:focus, .log-form textarea:focus {
+  border-color: rgba(240,180,41,0.4); box-shadow: 0 0 0 3px rgba(240,180,41,0.08);
+}
+.log-form select option { background: var(--surface2); }
+.log-form textarea { resize: vertical; min-height: 72px; }
+.btn-primary {
+  background: linear-gradient(135deg, #d97706, var(--gold));
+  color: #0a0c14; border: none; padding: 11px 24px;
+  border-radius: var(--radius-sm); font-weight: 800; font-size: 13px;
+  cursor: pointer; letter-spacing: 0.3px;
+  transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 4px 16px rgba(240,180,41,0.2);
+}
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(240,180,41,0.3); }
+.btn-primary:active { transform: translateY(0); }
+
+.log-entry {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--red); border-radius: var(--radius);
+  padding: 12px 14px; margin-bottom: 8px; position: relative;
+  transition: border-color var(--transition);
+}
+.log-entry:hover { border-color: var(--border2); }
+.log-entry b { color: var(--text); font-size: 13px; }
+.log-entry .reason { color: var(--text2); font-size: 12.5px; margin-top: 3px; }
+.log-entry .fix { color: var(--text3); font-size: 12px; margin-top: 5px; font-style: italic; }
+.log-entry .score-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--blue-dim); color: var(--blue);
+  font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 8px;
+  margin-top: 6px;
+}
+.log-entry .meta { font-size: 10.5px; color: var(--text3); margin-top: 6px; }
+.log-entry .del {
+  position: absolute; top: 10px; right: 12px;
+  color: var(--text3); cursor: pointer; font-size: 18px; line-height: 1;
+  transition: color var(--transition); width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center; border-radius: 4px;
+}
+.log-entry .del:hover { color: var(--red); background: var(--red-dim); }
+
+/* ===== CHECKLIST ===== */
+.ck-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 11px 14px; margin-bottom: 7px;
+  cursor: pointer; transition: all var(--transition);
+}
+.ck-item:hover { border-color: var(--border2); background: var(--surface2); }
+.ck-item.done { background: rgba(52,211,153,0.04); border-color: rgba(52,211,153,0.15); }
+.ck-item.done span { color: var(--text3); text-decoration: line-through; }
+.ck-item span { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+/* ===== CONTROLS (settings area) ===== */
+.settings-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden; margin: 16px 0;
+}
+.settings-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px; border-bottom: 1px solid var(--border);
+  gap: 16px; flex-wrap: wrap;
+}
+.settings-row:last-child { border-bottom: none; }
+.sr-info .sr-title { font-size: 13.5px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.sr-info .sr-desc { font-size: 12px; color: var(--text3); line-height: 1.5; }
+.btn-sec {
+  background: var(--surface2); border: 1px solid var(--border2);
+  color: var(--text2); padding: 8px 16px; border-radius: var(--radius-sm);
+  font-family: inherit; font-size: 12.5px; font-weight: 700;
+  cursor: pointer; transition: all var(--transition); white-space: nowrap; flex: none;
+}
+.btn-sec:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+.btn-danger {
+  background: var(--red-dim); border: 1px solid rgba(239,68,68,0.3);
+  color: #f87171; padding: 8px 16px; border-radius: var(--radius-sm);
+  font-family: inherit; font-size: 12.5px; font-weight: 700;
+  cursor: pointer; transition: all var(--transition); white-space: nowrap; flex: none;
+}
+.btn-danger:hover { background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.5); }
+
+/* ===== DAYS LEFT BANNER ===== */
+.days-banner {
+  background: linear-gradient(135deg, rgba(240,180,41,0.08), rgba(240,180,41,0.03));
+  border: 1px solid rgba(240,180,41,0.2);
+  border-radius: var(--radius); padding: 12px 16px;
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+}
+.days-num { font-size: 32px; font-weight: 900; color: var(--gold); line-height: 1; }
+.days-label { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.days-label b { color: var(--text); display: block; font-size: 14px; margin-bottom: 2px; }
+
+/* ===== EMPTY STATE ===== */
+.empty-state { text-align: center; padding: 40px 20px; }
+.empty-state .ei { font-size: 40px; margin-bottom: 12px; }
+.empty-state p { color: var(--text3); font-size: 13px; }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: var(--surface3); color: var(--text);
+  padding: 10px 20px; border-radius: 30px;
+  font-size: 13px; font-weight: 600;
+  border: 1px solid var(--border2);
+  box-shadow: var(--shadow);
+  opacity: 0; transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: none; z-index: 999;
+  display: flex; align-items: center; gap: 6px;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ===== SECTION DIVIDER ===== */
+.sec-divider {
+  height: 1px; background: var(--border); margin: 28px 0;
+}
+
+/* ===== RESOURCE PILLS ===== */
+.res-section { margin-top: 6px; }
+.res-section h4 { font-size: 11px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.res-card {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 8px;
+}
+.res-card h5 { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.res-card ul { padding-left: 16px; }
+.res-card ul li { font-size: 12.3px; color: var(--text2); margin-bottom: 4px; line-height: 1.5; }
+.res-card ul li b { color: var(--text); }
+
+
+/* ===== PRACTICE LAB ===== */
+.practice-filters{display:flex;gap:7px;flex-wrap:wrap;margin:16px 0}
+.filter-btn{background:var(--surface);border:1px solid var(--border2);color:var(--text2);padding:8px 12px;border-radius:20px;font:600 11px inherit;cursor:pointer}
+.filter-btn:hover,.filter-btn.active{background:var(--gold-dim);border-color:rgba(240,180,41,.35);color:var(--gold)}
+.practice-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:9px;overflow:hidden}
+.practice-card-head{display:flex;align-items:center;gap:10px;padding:12px 14px}
+.practice-card-head .pc-name{flex:1;font-weight:700;font-size:13px}
+.pc-meta{font-size:10px;color:var(--text3)}
+.practice-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:10px 14px;border-top:1px solid var(--border);background:rgba(0,0,0,.12)}
+.p-action{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px;color:var(--text2);font:600 10.5px inherit;cursor:pointer;text-align:center}
+.p-action.done{background:var(--green-dim);border-color:rgba(52,211,153,.25);color:var(--green)}
+.p-action:hover{border-color:var(--gold);color:var(--gold)}
+.p-score{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--border)}
+.p-score input{flex:1;background:var(--surface2);border:1px solid var(--border2);color:var(--text);border-radius:8px;padding:8px;font:12px inherit;outline:none}
+.p-score button{background:var(--gold-dim);border:1px solid rgba(240,180,41,.25);color:var(--gold);border-radius:8px;padding:8px 12px;font-weight:700;cursor:pointer}
+.revision-panel{padding:12px 14px;border-top:1px solid var(--border);background:rgba(167,139,250,.03)}
+.revision-panel textarea{width:100%;min-height:75px;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;color:var(--text);padding:9px;font:12px inherit;resize:vertical;outline:none}
+.revision-checks{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px}
+.mini-check{font-size:10px;padding:5px 8px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);cursor:pointer}
+.mini-check.done{background:var(--green-dim);border-color:rgba(52,211,153,.25);color:var(--green)}
+.archived-note{opacity:.65;font-size:11px;margin-top:12px}
+@media(max-width:600px){.practice-actions{grid-template-columns:repeat(2,1fr)}}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  header { padding: 20px 14px; }
+  .wrap { padding: 16px 12px 80px; }
+  .day-block h4, .phase-name { font-size: 12.5px; }
+  .slot .time { width: 80px; font-size: 10px; }
+  nav button { padding: 12px 12px; font-size: 12px; }
+}
+
+/* ===== 2026 PREMIUM UI UPGRADE ===== */
+:root{--bg:#070b12;--surface:#0d1420;--surface2:#111b2a;--surface3:#182437;--border:rgba(148,163,184,.10);--border2:rgba(148,163,184,.18);--gold:#ffbf4a;--blue:#55a8ff;--green:#35dfae;--text:#edf4ff;--text2:#9eabc0;--text3:#63718a;--radius:16px;--shadow:0 16px 50px rgba(0,0,0,.28)}
+body{background:radial-gradient(circle at 85% 5%,rgba(60,120,255,.10),transparent 28%),radial-gradient(circle at 20% 90%,rgba(255,184,70,.055),transparent 25%),#070b12}
+header{margin-left:230px;min-height:205px;border-bottom:1px solid var(--border2);background:linear-gradient(135deg,#08101c 0%,#0b1422 55%,#0a101b 100%);padding:34px 34px 30px}
+.header-inner{max-width:1080px}
+header h1{font-size:clamp(30px,4vw,48px);letter-spacing:-1.5px}
+header p{font-size:14px;max-width:700px}
+.header-stats{gap:10px}.hstat{background:rgba(255,255,255,.035);backdrop-filter:blur(10px);border-color:var(--border2);padding:9px 15px}
+nav{position:fixed;left:0;top:0;bottom:0;width:230px;z-index:500;display:flex;flex-direction:column;align-items:stretch;overflow-y:auto;overflow-x:hidden;padding:20px 12px;background:rgba(7,11,18,.96);border-right:1px solid var(--border2);border-bottom:0;backdrop-filter:blur(20px)}
+nav:before{content:'JEE 2027';display:block;color:var(--text);font-weight:900;font-size:18px;padding:8px 12px 18px;letter-spacing:-.5px}
+nav button{width:100%;text-align:left;border:1px solid transparent;border-radius:11px;padding:11px 13px;margin:2px 0;font-size:12.5px;color:var(--text2);border-bottom:0}
+nav button:hover{background:var(--surface2);color:var(--text)}nav button.active{background:linear-gradient(90deg,rgba(255,191,74,.15),rgba(255,191,74,.04));border:1px solid rgba(255,191,74,.20);color:var(--gold);box-shadow:inset 3px 0 0 var(--gold)}
+.wrap{max-width:1080px;margin:0 auto 0 230px;padding:28px 34px 90px}
+.view{animation:fadeIn .22s ease}
+.dash .card,.ch-card,.phase,.day-block,.log-form,.settings-card,.res-card,.box{border-color:var(--border2);box-shadow:0 8px 28px rgba(0,0,0,.14)}
+.dash .card{background:linear-gradient(145deg,#0e1724,#0c121d);padding:18px}.dash .card .big{font-size:30px}
+.days-banner{background:linear-gradient(135deg,rgba(255,191,74,.12),rgba(85,168,255,.06));border-color:rgba(255,191,74,.22);box-shadow:var(--shadow)}
+.ch-card:hover,.phase:hover,.res-card:hover,.day-block:hover{border-color:rgba(255,255,255,.20);box-shadow:0 12px 32px rgba(0,0,0,.20)}
+.ch-main{padding:15px 16px}.ch-name{font-size:14px}.subtopics{padding-left:49px}.study-guide{background:linear-gradient(180deg,rgba(255,191,74,.045),transparent)}
+.pbar-outer{height:8px}.pbar-inner{height:8px}
+.page-hero{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:26px 28px;border:1px solid var(--border2);border-radius:22px;margin-bottom:20px;background:linear-gradient(135deg,rgba(85,168,255,.10),rgba(255,191,74,.05));box-shadow:var(--shadow)}
+.page-hero h2{font-size:30px;letter-spacing:-.8px;margin:4px 0 5px}.page-hero p{color:var(--text2);max-width:680px}.eyebrow{font-size:10px;letter-spacing:1.8px;font-weight:900;color:var(--gold)}.hero-icon{font-size:52px;filter:drop-shadow(0 8px 20px rgba(255,191,74,.18))}
+.glass-card{background:linear-gradient(145deg,rgba(17,27,42,.92),rgba(10,17,28,.96));border:1px solid var(--border2);border-radius:20px;box-shadow:var(--shadow)}
+.note-layout{display:grid;grid-template-columns:minmax(300px,.85fr) minmax(360px,1.15fr);gap:18px;align-items:start}.note-composer{padding:22px;position:sticky;top:20px}.card-title-row,.section-line,.composer-row,.countdown-top,.countdown-foot{display:flex;justify-content:space-between;align-items:center;gap:12px}.card-title-row h3,.section-line h3{font-size:16px}.card-title-row span,.section-line span{font-size:11px;color:var(--text3)}.mini-badge{font-size:9px!important;padding:4px 7px;border:1px solid var(--border2);border-radius:20px;color:var(--green)!important}
+.nice-input,.nice-textarea,.nice-select{width:100%;background:#09111d;border:1px solid var(--border2);color:var(--text);border-radius:12px;padding:12px 13px;font:inherit;outline:none;transition:.2s}.nice-input{margin-top:18px}.nice-textarea{min-height:155px;resize:vertical;margin-top:10px}.nice-select{width:auto;flex:1;margin:0}.nice-input:focus,.nice-textarea:focus,.nice-select:focus{border-color:rgba(85,168,255,.55);box-shadow:0 0 0 4px rgba(85,168,255,.08)}.glow-btn{background:linear-gradient(135deg,#ffb52f,#ffd166);color:#111827;border:0;border-radius:12px;padding:11px 16px;font-weight:900;cursor:pointer;box-shadow:0 7px 22px rgba(255,191,74,.18);white-space:nowrap}.glow-btn:hover{transform:translateY(-1px)}
+.critical-list{margin-top:12px}.critical-note{position:relative;padding:17px 45px 17px 18px;background:linear-gradient(145deg,#0e1724,#0b121d);border:1px solid var(--border2);border-radius:16px;margin-bottom:10px;box-shadow:0 7px 24px rgba(0,0,0,.14)}.critical-note:before{content:'';position:absolute;left:0;top:13px;bottom:13px;width:3px;border-radius:3px;background:var(--gold)}.critical-note h4{font-size:14px;margin-bottom:5px}.critical-note p{white-space:pre-wrap;color:var(--text2);font-size:12.5px;line-height:1.65}.critical-meta{margin-top:10px;color:var(--text3);font-size:10px;display:flex;gap:8px;align-items:center}.note-tag{padding:3px 7px;border-radius:7px;background:rgba(255,191,74,.10);color:var(--gold);border:1px solid rgba(255,191,74,.18)}.delete-note{position:absolute;right:12px;top:12px;background:transparent;border:0;color:var(--text3);font-size:19px;cursor:pointer}.delete-note:hover{color:#ff6b6b}.empty-notes{text-align:center;padding:48px 20px;border:1px dashed var(--border2);border-radius:16px;color:var(--text3)}
+.countdown-panel{padding:26px}.countdown-top{border-bottom:1px solid var(--border);padding-bottom:18px}.countdown-top h3{margin-top:4px}.muted-label{font-size:9px;letter-spacing:1.4px;color:var(--text3);font-weight:900}.date-input{width:auto;margin:0;min-width:160px}.timer-grid{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center;gap:12px;padding:42px 8px}.timer-unit{text-align:center}.timer-unit strong{display:block;font-size:clamp(42px,8vw,76px);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-3px;background:linear-gradient(180deg,#fff,#91a7c5);-webkit-background-clip:text;-webkit-text-fill-color:transparent}.timer-unit span{display:block;font-size:9px;letter-spacing:2px;color:var(--text3);font-weight:900;margin-top:10px}.timer-sep{font-size:42px;color:var(--gold);opacity:.7;margin-top:-15px}.soft-btn{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);padding:9px 12px;border-radius:10px;cursor:pointer}.soft-btn:hover{color:var(--gold);border-color:rgba(255,191,74,.3)}.countdown-foot{font-size:11px;color:var(--text3);padding-top:16px;border-top:1px solid var(--border)}.countdown-tips{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}.tip-card{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:15px}.tip-card b{display:block;color:var(--text3);font-size:9px;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}.tip-card span{font-size:13px;color:var(--text2)}
+@media(max-width:820px){header{margin-left:0;padding:25px 18px}nav{position:sticky;top:0;left:auto;width:100%;height:auto;flex-direction:row;align-items:center;overflow-x:auto;overflow-y:hidden;padding:7px 9px;border-right:0;border-bottom:1px solid var(--border2)}nav:before{display:none}nav button{width:auto;flex:none;text-align:center;padding:9px 12px}.wrap{margin:0;padding:20px 14px 80px}.note-layout{grid-template-columns:1fr}.note-composer{position:static}.timer-grid{gap:5px}.countdown-tips{grid-template-columns:1fr}}
+@media(max-width:560px){.page-hero{padding:20px}.page-hero h2{font-size:24px}.hero-icon{font-size:38px}.composer-row{flex-direction:column;align-items:stretch}.nice-select{width:100%}.glow-btn{width:100%}.countdown-panel{padding:17px}.countdown-top{align-items:flex-start;flex-direction:column}.date-input{width:100%}.timer-grid{grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;padding:28px 0}.timer-unit strong{font-size:34px;letter-spacing:-1px}.timer-sep{font-size:24px}}
+
+
+/* ===== NEXT LEVEL COMMAND CENTER ===== */
+.nl-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px;margin:16px 0}
+.nl-card{background:linear-gradient(145deg,rgba(17,27,42,.96),rgba(8,14,24,.98));border:1px solid var(--border2);border-radius:20px;box-shadow:0 10px 35px rgba(0,0,0,.18);padding:20px}
+.nl-card h3{font-size:15px;margin-bottom:4px}.nl-muted{color:var(--text3);font-size:11px}
+.today-hero{position:relative;overflow:hidden;background:
+ radial-gradient(circle at 90% 10%,rgba(255,191,74,.18),transparent 28%),
+ linear-gradient(135deg,#101d31,#0a111d);border:1px solid rgba(255,191,74,.22)}
+.today-hero:after{content:'⚡';position:absolute;right:22px;bottom:-20px;font-size:110px;opacity:.035}
+.today-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.today-date{font-size:10px;text-transform:uppercase;letter-spacing:1.6px;color:var(--gold);font-weight:900}
+.today-hero h2{font-size:27px;letter-spacing:-.8px;margin:4px 0}
+.focus-chip{padding:7px 10px;border-radius:10px;background:rgba(52,211,153,.09);color:var(--green);border:1px solid rgba(52,211,153,.2);font-size:10px;font-weight:800}
+.today-progress{margin-top:18px;height:10px;background:#07101c;border-radius:20px;overflow:hidden}
+.today-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#ffd166,var(--green));border-radius:20px;transition:.35s}
+.today-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.today-stat{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:12px;padding:11px;text-align:center}
+.today-stat b{display:block;font-size:19px;color:var(--text)}.today-stat span{font-size:9px;color:var(--text3);text-transform:uppercase}
+.task-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.task-row:last-child{border-bottom:0}.task-box{width:18px;height:18px;border:1px solid var(--border2);border-radius:5px;flex:none;margin-top:1px}
+.task-row.done .task-box{background:var(--green);border-color:var(--green)}
+.task-row.done .task-box:after{content:'✓';display:block;color:#07140f;font-size:12px;font-weight:900;text-align:center}
+.task-row.done .task-text{text-decoration:line-through;color:var(--text3)}
+.task-text{font-size:12.5px;color:var(--text2);line-height:1.45}
+.quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.quick-btn{background:linear-gradient(145deg,#111d2c,#0b131f);border:1px solid var(--border2);border-radius:14px;padding:13px;text-align:left;color:var(--text);cursor:pointer;transition:.2s}
+.quick-btn:hover{transform:translateY(-2px);border-color:rgba(255,191,74,.35);box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.quick-btn b{display:block;font-size:12px}.quick-btn span{display:block;font-size:10px;color:var(--text3);margin-top:3px}
+.streak-box{display:flex;align-items:center;gap:14px;margin-top:14px;padding:13px;border-radius:14px;background:rgba(255,191,74,.06);border:1px solid rgba(255,191,74,.16)}
+.streak-fire{font-size:29px}.streak-box strong{font-size:22px;color:var(--gold)}.streak-box small{display:block;color:var(--text3);font-size:10px}
+.xp-wrap{margin-top:12px}.xp-head{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:5px}.xp-bar{height:8px;border-radius:20px;background:#07101c;overflow:hidden}.xp-bar span{display:block;height:100%;background:linear-gradient(90deg,#8b5cf6,#60a5fa);width:0;transition:.35s}
+.focus-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:16px}.focus-timer{text-align:center;padding:26px}.focus-time{font-size:clamp(58px,12vw,105px);font-weight:900;letter-spacing:-5px;font-variant-numeric:tabular-nums;background:linear-gradient(180deg,#fff,#8ca2c0);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.focus-mode{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);font-weight:900}
+.focus-controls{display:flex;justify-content:center;gap:8px;margin-top:16px}.mode-row{display:flex;justify-content:center;gap:6px;margin:12px 0}.mode-row button{background:var(--surface2);border:1px solid var(--border2);color:var(--text3);border-radius:9px;padding:7px 10px;font-size:10px;font-weight:800;cursor:pointer}.mode-row button.active{color:var(--gold);border-color:rgba(255,191,74,.3);background:var(--gold-dim)}
+.heatmap{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;margin-top:12px}.heat{aspect-ratio:1;border-radius:3px;background:#111c2b;border:1px solid rgba(255,255,255,.025)}.heat.l1{background:#244d44}.heat.l2{background:#347b64}.heat.l3{background:#4ab886}.heat.l4{background:#ffd166}
+.achievement-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.achievement{padding:12px;border-radius:13px;border:1px solid var(--border);background:var(--surface);opacity:.45}.achievement.unlocked{opacity:1;border-color:rgba(255,191,74,.24);background:linear-gradient(145deg,rgba(255,191,74,.08),var(--surface))}
+.achievement .medal{font-size:23px}.achievement b{display:block;font-size:11px;margin-top:4px}.achievement span{display:block;font-size:9px;color:var(--text3);margin-top:2px}
+.analytics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.metric{padding:13px;border-radius:13px;background:var(--surface);border:1px solid var(--border)}.metric b{font-size:20px;color:var(--gold);display:block}.metric span{font-size:9px;color:var(--text3);text-transform:uppercase}
+@media(max-width:850px){.nl-grid,.focus-layout{grid-template-columns:1fr}.today-stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.achievement-grid{grid-template-columns:repeat(2,1fr)}.analytics-grid{grid-template-columns:repeat(2,1fr)}.heatmap{grid-template-columns:repeat(10,1fr)}}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-pill">JEE Main 2027 · Preparation Tracker · Aug 2026 Start</div>
+    <h1>JEE 2027 <span class="accent">Tracker</span></h1>
+    <p>Full-syllabus tracker with subtopics, study routes, topic tests, PYQs, revision sheets, error tracking and a day-by-day runway. JEE 2027 dates are provisional until NTA publishes them.</p>
+    <div class="header-stats">
+      <div class="hstat"><span class="hn" id="hs-days">—</span><span class="hl">Days Left</span></div>
+      <div class="hstat"><span class="hn" id="hs-done">0%</span><span class="hl">Overall Done</span></div>
+      <div class="hstat"><span class="hn" id="hs-high">0%</span><span class="hl">High-Tier</span></div>
+    </div>
+  </div>
+</header>
+
+<nav id="navbar">
+  <button data-view="dashboard" class="active">📊 Dashboard</button>
+  <button data-view="today">🔥 Today</button>
+  <button data-view="focus">⏱ Focus</button>
+  <button data-view="physics">⚛️ Physics</button>
+  <button data-view="chemistry">🧪 Chemistry</button>
+  <button data-view="maths">📐 Maths</button>
+  <button data-view="plan">🗓 Aug–Jan Plan</button>
+  <button data-view="weekplan">⏱ Schedule</button>
+  <button data-view="practice">🧠 Practice Lab</button>
+  <button data-view="resources">📚 Resources</button>
+  <button data-view="examtips">🎯 Exam Tips</button>
+  <button data-view="errorlog">📝 Error Log</button>
+  <button data-view="notes">📌 Critical Notes</button>
+  <button data-view="countdown">⏳ Countdown</button>
+  <button data-view="settings">⚙️ Settings</button>
+</nav>
+
+<div class="wrap">
+
+<!-- ===== DASHBOARD ===== -->
+<div class="view active" id="view-dashboard">
+
+  <div class="days-banner">
+    <div class="days-num" id="daysLeft">—</div>
+    <div class="days-label">
+      <b>Days until JEE Main 2027 (Jan)</b>
+      Start now. Every day from here is non-negotiable.
+    </div>
+  </div>
+
+  
+  <div class="nl-grid">
+    <div class="nl-card today-hero">
+      <div class="today-top">
+        <div><div class="today-date" id="dashTodayDate">TODAY</div><h2 id="dashTodayTitle">Build the streak.</h2><div class="nl-muted" id="dashTodaySub">Small wins compound.</div></div>
+        <div class="focus-chip" id="dashFocusChip">READY</div>
+      </div>
+      <div class="today-progress"><span id="dashDayBar"></span></div>
+      <div class="today-stats">
+        <div class="today-stat"><b id="dashXP">0</b><span>XP</span></div>
+        <div class="today-stat"><b id="dashStreak">0</b><span>Day Streak</span></div>
+        <div class="today-stat"><b id="dashTasks">0</b><span>Today Done</span></div>
+        <div class="today-stat"><b id="dashWeak">—</b><span>Weak Area</span></div>
+      </div>
+      <div class="streak-box"><div class="streak-fire">🔥</div><div><strong id="dashStreakBig">0 days</strong><small>Study activity streak · keep it alive today</small></div></div>
+      <div class="xp-wrap"><div class="xp-head"><span>LEVEL PROGRESS</span><span id="dashLevelText">Level 1 · 0/100 XP</span></div><div class="xp-bar"><span id="dashXPBar"></span></div></div>
+    </div>
+    <div class="nl-card">
+      <div class="card-title-row"><h3>⚡ Quick Actions</h3><span>one tap</span></div>
+      <div class="quick-grid" style="margin-top:12px">
+        <button class="quick-btn" onclick="showView('today')"><b>🔥 Open Today</b><span>See your exact tasks</span></button>
+        <button class="quick-btn" onclick="showView('focus')"><b>⏱ Start Focus</b><span>Study without distractions</span></button>
+        <button class="quick-btn" onclick="showView('practice')"><b>🧠 Practice Lab</b><span>Log PYQs & tests</span></button>
+        <button class="quick-btn" onclick="showView('notes')"><b>📌 Critical Note</b><span>Save something important</span></button>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="sec">Your Progress</h2>
+  <div class="dash">
+    <div class="card"><div class="big" id="dashOverall">0%</div><div class="lab">Overall Chapters</div></div>
+    <div class="card"><div class="big" id="dashHigh">0%</div><div class="lab">High-Priority Done</div></div>
+    <div class="card"><div class="big" id="dashSub">0%</div><div class="lab">Subtopics Done</div></div>
+    <div class="card"><div class="big" id="dashLog">0</div><div class="lab">Error Log Entries</div></div>
+  </div>
+
+  <h3 class="grp">Subject Progress</h3>
+  <div class="pbar-row">
+    <div class="pbar-label"><span>Physics</span><span class="pbar-count" id="dp-phy">—</span></div>
+    <div class="pbar-outer"><div class="pbar-inner" id="bar-phy" style="width:0%"></div></div>
+  </div>
+  <div class="pbar-row">
+    <div class="pbar-label"><span>Chemistry</span><span class="pbar-count" id="dp-chem">—</span></div>
+    <div class="pbar-outer"><div class="pbar-inner" id="bar-chem" style="width:0%"></div></div>
+  </div>
+  <div class="pbar-row">
+    <div class="pbar-label"><span>Mathematics</span><span class="pbar-count" id="dp-math">—</span></div>
+    <div class="pbar-outer"><div class="pbar-inner" id="bar-math" style="width:0%"></div></div>
+  </div>
+  <div class="pbar-row" style="margin-top:16px">
+    <div class="pbar-label"><span>Monthly Plan Tasks</span><span class="pbar-count" id="dp-phase">—</span></div>
+    <div class="pbar-outer"><div class="pbar-inner" id="bar-phase" style="width:0%"></div></div>
+  </div>
+
+  <div class="box blue" style="margin-top:24px">
+    <h5>How to use this tracker</h5>
+    Tap the <b>▸</b> arrow on any chapter to expand subtopics + study guide. Tick subtopics as you finish them — the chapter auto-completes when all subtopics are done. Use <b>Error Log</b> after every mock. Check <b>Aug–Jan Plan</b> for week-by-week targets.
+  </div>
+
+</div>
+
+<!-- ===== PHYSICS ===== -->
+
+<div class="view" id="view-today">
+  <div class="page-hero">
+    <div><span class="eyebrow">YOUR DAILY COMMAND CENTER</span><h2>Today</h2><p>No planning spiral. Open this page and execute the next task.</p></div><div class="hero-icon">🔥</div>
+  </div>
+  <div class="nl-grid">
+    <div class="nl-card today-hero">
+      <div class="today-top"><div><div class="today-date" id="todayDateFull">TODAY</div><h2 id="todayHeadline">Today's mission</h2><div class="nl-muted" id="todayMotivation">Consistency beats intensity.</div></div><div class="focus-chip" id="todayStatus">0%</div></div>
+      <div class="today-progress"><span id="todayBar"></span></div>
+      <div class="today-stats">
+        <div class="today-stat"><b id="todayXP">0</b><span>XP</span></div><div class="today-stat"><b id="todayDone">0</b><span>Done</span></div><div class="today-stat"><b id="todayRemain">0</b><span>Remaining</span></div><div class="today-stat"><b id="todayLevel">1</b><span>Level</span></div>
+      </div>
+    </div>
+    <div class="nl-card">
+      <div class="card-title-row"><h3>🎯 Suggested session</h3><span id="todaySessionLabel">AUTO</span></div>
+      <div id="todaySuggestion" style="margin-top:12px;color:var(--text2);font-size:12.5px;line-height:1.7"></div>
+      <button class="glow-btn" style="margin-top:12px" onclick="showView('focus')">Start Focus →</button>
+    </div>
+  </div>
+  <div class="nl-card">
+    <div class="section-line"><h3>Today's Checklist</h3><span>complete to earn XP</span></div>
+    <div id="todayTaskList" style="margin-top:8px"></div>
+  </div>
+  <div class="nl-card" style="margin-top:16px">
+    <div class="section-line"><h3>Activity Heatmap</h3><span>last 56 days</span></div>
+    <div id="heatmap" class="heatmap"></div>
+  </div>
+</div>
+
+
+<div class="view" id="view-focus">
+  <div class="page-hero">
+    <div><span class="eyebrow">DEEP WORK MODE</span><h2>Focus Room</h2><p>Pick a mode, start the timer, and leave everything else alone.</p></div><div class="hero-icon">⏱️</div>
+  </div>
+  <div class="focus-layout">
+    <div class="nl-card focus-timer">
+      <div class="focus-mode" id="focusModeLabel">FOCUS</div>
+      <div class="focus-time" id="focusTime">25:00</div>
+      <div class="mode-row">
+        <button class="active" onclick="setFocusMode(25,this)">25 min</button><button onclick="setFocusMode(50,this)">50 min</button><button onclick="setFocusMode(90,this)">90 min</button><button onclick="setFocusMode(5,this)">5 min</button>
+      </div>
+      <div class="focus-controls"><button class="glow-btn" id="focusStart" onclick="toggleFocus()">Start</button><button class="soft-btn" onclick="resetFocus()">Reset</button></div>
+    </div>
+    <div class="nl-card">
+      <div class="section-line"><h3>🧠 Focus rules</h3><span>simple & brutal</span></div>
+      <div class="task-row"><div class="task-box"></div><div class="task-text">Phone away / DND on</div></div>
+      <div class="task-row"><div class="task-box"></div><div class="task-text">One chapter or one problem set only</div></div>
+      <div class="task-row"><div class="task-box"></div><div class="task-text">When stuck, mark it — don't scroll</div></div>
+      <div class="task-row"><div class="task-box"></div><div class="task-text">End with 2-minute recall of what you learned</div></div>
+      <div class="box blue" style="margin-top:14px"><h5>XP rule</h5>Finish a focus session and earn <b>+25 XP</b>. Complete the planned task too and earn another <b>+25 XP</b>.</div>
+    </div>
+  </div>
+  <div class="nl-card" style="margin-top:16px">
+    <div class="section-line"><h3>🏆 Achievements</h3><span>unlock as you study</span></div>
+    <div class="achievement-grid" id="achievementGrid" style="margin-top:12px"></div>
+  </div>
+</div>
+
+<div class="view" id="view-physics">
+  <h2 class="sec">Physics</h2>
+  <p class="intro">Tap ▸ to expand subtopics + study guide. Tick subtopics as you study them. Chapter auto-completes when all subtopics are ticked.</p>
+  <h3 class="grp">Class XI Physics <span class="gp" id="gp-phy11">0/0</span></h3>
+  <div id="list-phy11"></div>
+  <h3 class="grp">Class XII Physics <span class="gp" id="gp-phy12">0/0</span></h3>
+  <div id="list-phy12"></div>
+  <div class="box gold">
+    <h5>Priority order</h5>
+    Current Electricity → Ray Optics → Semiconductor Electronics → Rotational Motion → Gravitation → Electrostatic Potential & Capacitance → Units & Measurements → Dual Nature → Alternating Current → Electric Charges & Fields
+  </div>
+</div>
+
+<!-- ===== CHEMISTRY ===== -->
+<div class="view" id="view-chemistry">
+  <h2 class="sec">Chemistry</h2>
+  <p class="intro">NCERT line-by-line is non-negotiable for Inorganic. This tracker uses the latest official JEE Main syllabus available as the 2027 baseline; legacy/removed chapters are excluded from progress totals until NTA publishes the 2027 syllabus.</p>
+  <h3 class="grp">Class XI Chemistry <span class="gp" id="gp-chem11">0/0</span></h3>
+  <div id="list-chem11"></div>
+  <h3 class="grp">Class XII Chemistry <span class="gp" id="gp-chem12">0/0</span></h3>
+  <div id="list-chem12"></div>
+  <div class="box gold">
+    <h5>Priority order</h5>
+    Aldehydes/Ketones/Carboxylic Acids → Coordination Compounds → Solutions → d&f-Block → Amines → Equilibrium → s-Block → Chemical Bonding → GOC → Biomolecules
+  </div>
+</div>
+
+<!-- ===== MATHS ===== -->
+<div class="view" id="view-maths">
+  <h2 class="sec">Mathematics</h2>
+  <p class="intro">Calculus + Algebra = >50% of the Maths paper. Vector Algebra and 3D Geometry share methods — master one and the other becomes easy.</p>
+  <h3 class="grp">Class XI Maths <span class="gp" id="gp-math11">0/0</span></h3>
+  <div id="list-math11"></div>
+  <h3 class="grp">Class XII Maths <span class="gp" id="gp-math12">0/0</span></h3>
+  <div id="list-math12"></div>
+  <div class="box gold">
+    <h5>Priority order</h5>
+    3D Geometry → Limits/Continuity/Differentiability → Definite Integration → Application of Derivatives → Vector Algebra → Determinants → Sequences & Series → Binomial Theorem → Complex Numbers → Differential Equations
+  </div>
+</div>
+
+<!-- ===== PLAN ===== -->
+<div class="view" id="view-plan">
+  <h2 class="sec">Aug 2026 → Jan 2027 Preparation Plan</h2>
+  <p class="intro">Starting <b style="color:var(--gold)">August 18, 2026</b>. The remaining runway is treated as a planning window; adjust when NTA announces the 2027 schedule. Tap each task to tick it off. Tap phase header to collapse/expand.</p>
+  <div class="box red">
+    <h5>The honest truth</h5>
+    5 months with a full Class 11 backlog is tight. The only way through: stop studying everything equally, start studying by weightage. Every week you should be working on the highest-value undone chapter first. Miss a week? Shift it — don't abandon the order.
+  </div>
+  <div class="cal-grid">
+    <div class="cal-month"><div class="cm-head">August</div><div class="cm-body"><b>Wks 1–5</b><br>Phase 1: Highest-value active chapters — backlog demolition</div></div>
+    <div class="cal-month"><div class="cm-head">September</div><div class="cm-body"><b>Wks 6–9</b><br>Phase 2: MID-tier Class 11 + Class 12 school-sync</div></div>
+    <div class="cal-month"><div class="cm-head">October</div><div class="cm-body"><b>Wks 10–14</b><br>Phase 3: Full Class 12 depth + first full mocks</div></div>
+    <div class="cal-month"><div class="cm-head">November</div><div class="cm-body"><b>Wks 15–18</b><br>Phase 4: 2–3 mocks/week + error log review</div></div>
+    <div class="cal-month"><div class="cm-head">December</div><div class="cm-body"><b>Wks 19–22</b><br>Phase 5: Revision + mocks. New learning only for genuine gaps.</div></div>
+    <div class="cal-month"><div class="cm-head">January</div><div class="cm-body"><b>Days 1–7</b><br>Phase 6: Final taper. Formula sheets + error log + light practice.</div></div>
+  </div>
+  <div id="phaseContainer"></div>
+</div>
+
+<!-- ===== WEEKLY SCHEDULE ===== -->
+<div class="view" id="view-weekplan">
+  <h2 class="sec">Weekly Schedule</h2>
+  <p class="intro">For school 8 AM–3:30 PM. ~5.5 hrs study/day outside school. Every day rotates so no subject goes >2 days without a touch.</p>
+  <div class="day-block">
+    <h4>Weekday (Mon–Fri)</h4>
+    <div class="slot"><span class="time">6:00–7:00 AM</span><span class="desc"><b>Maths</b> — new topic or 10 PYQs (freshest mind = hardest subject)</span></div>
+    <div class="slot"><span class="time">8 AM–3:30 PM</span><span class="desc"><b>School</b> — Class 12 chapters taught here = free JEE prep. Stay alert.</span></div>
+    <div class="slot"><span class="time">4:00–5:00 PM</span><span class="desc"><b>Rest</b> — mandatory. Skipping this kills the evening session.</span></div>
+    <div class="slot"><span class="time">5:00–6:30 PM</span><span class="desc"><b>Physics or Chemistry</b> — rotate daily. New concept + 10 PYQs same session.</span></div>
+    <div class="slot"><span class="time">6:30–7:30 PM</span><span class="desc"><b>Maths problems</b> — practice on the morning topic</span></div>
+    <div class="slot"><span class="time">7:30–8:15 PM</span><span class="desc">Dinner</span></div>
+    <div class="slot"><span class="time">8:15–9:45 PM</span><span class="desc"><b>Third subject</b> — whichever wasn't covered in 5–6:30 slot</span></div>
+    <div class="slot"><span class="time">9:45–10:15 PM</span><span class="desc"><b>Formula review + Error Log</b> — 15 min max. Sleep by 10:30 PM.</span></div>
+  </div>
+  <div class="day-block">
+    <h4>Weekend (Sat–Sun)</h4>
+    <div class="slot"><span class="time">Sat AM</span><span class="desc"><b>Deep work</b> — hardest pending chapter or a chapter revision session</span></div>
+    <div class="slot"><span class="time">Sat PM</span><span class="desc"><b>Subject mini-mock</b> (25 Qs, 45 min, timed) on this week's chapters</span></div>
+    <div class="slot"><span class="time">Sun AM</span><span class="desc"><b>Full 3-hr mock</b> from October onwards — phone off, no breaks, real conditions</span></div>
+    <div class="slot"><span class="time">Sun PM</span><span class="desc"><b>Mock review</b> — every wrong answer diagnosed. Plan next week.</span></div>
+  </div>
+  <h3 class="grp" style="margin-top:24px">Subject Rotation (Weekday 5–6:30 PM slot)</h3>
+  <table class="rtable">
+    <tr><th>Day</th><th>5–6:30 PM</th><th>8:15–9:45 PM</th></tr>
+    <tr><td>Monday</td><td>Physics — new chapter</td><td>Chemistry — revision / PYQs</td></tr>
+    <tr><td>Tuesday</td><td>Chemistry — new chapter</td><td>Physics — PYQs from Monday</td></tr>
+    <tr><td>Wednesday</td><td>Physics — continue / PYQs</td><td>Chemistry — new chapter</td></tr>
+    <tr><td>Thursday</td><td>Chemistry — PYQs</td><td>Physics — new chapter</td></tr>
+    <tr><td>Friday</td><td>Weak subject deep-dive</td><td>Formula + error log review</td></tr>
+  </table>
+</div>
+
+
+<!-- ===== PRACTICE LAB ===== -->
+<div class="view" id="view-practice">
+  <h2 class="sec">Practice Lab</h2>
+  <p class="intro">Every active chapter gets a repeatable practice loop: <b>Theory → PYQs → Topic Tests → Revision Sheet → Re-test.</b> Targets are deliberately small enough to finish, but strong enough to expose weak spots.</p>
+
+  <div class="dash practice-dash">
+    <div class="card"><div class="big" id="practiceTheory">0%</div><div class="lab">Theory Complete</div></div>
+    <div class="card"><div class="big" id="practiceTests">0%</div><div class="lab">Tests Complete</div></div>
+    <div class="card"><div class="big" id="practiceRevision">0%</div><div class="lab">Revision Sheets</div></div>
+    <div class="card"><div class="big" id="practicePYQ">0%</div><div class="lab">PYQ Targets</div></div>
+  </div>
+
+  <div class="box blue">
+    <h5>How to use each chapter</h5>
+    <ul>
+      <li><b>After theory:</b> do the chapter's PYQ target before calling it "done".</li>
+      <li><b>Topic Test:</b> use a chapter-wise test from your test series or NTA/official practice material. Record the score here.</li>
+      <li><b>Revision sheet:</b> one page only — formulas/reactions, traps, 3–5 starred questions and your personal mistakes.</li>
+      <li><b>Retest:</b> repeat after 7–14 days. A chapter is strong when you can solve without reopening theory.</li>
+    </ul>
+  </div>
+
+  <div class="practice-filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="physics">Physics</button>
+    <button class="filter-btn" data-filter="chemistry">Chemistry</button>
+    <button class="filter-btn" data-filter="maths">Maths</button>
+    <button class="filter-btn" data-filter="high">High Priority</button>
+    <button class="filter-btn" data-filter="pending">Needs Work</button>
+  </div>
+
+  <div id="practiceContainer"></div>
+
+  <div class="box gold" style="margin-top:18px">
+    <h5>Recommended external practice</h5>
+    <p>Use <a href="https://www.nta.ac.in/Abhyas" target="_blank" rel="noopener">National Test Abhyas</a> for NTA-style mock practice and the <a href="https://jeemain.nta.nic.in/" target="_blank" rel="noopener">official JEE Main site</a> for official notices, syllabus and released papers. For chapter-wise PYQs, use the PYQ book/test series you already own rather than collecting multiple sources.</p>
+  </div>
+</div>
+
+<!-- ===== RESOURCES ===== -->
+<div class="view" id="view-resources">
+  <h2 class="sec">Best Resources</h2>
+  <p class="intro">Ranked by JEE Main relevance. The rule: go <b>deep on fewer sources</b>, not shallow on many.</p>
+
+  <h3 class="grp">Physics</h3>
+  <div class="res-card">
+    <h5>📚 Books</h5>
+    <ul>
+      <li><b>HC Verma Vol 1 & 2</b> — Concepts of Physics. Start here. Do ALL worked examples + exercises.</li>
+      <li><b>DC Pandey</b> — After HC Verma per chapter, use DC Pandey for extra problem practice. Don't read theory from here.</li>
+      <li><b>NCERT Physics XI & XII</b> — Read fully. NCERT examples appear in JEE papers directly.</li>
+    </ul>
+  </div>
+  <div class="res-card">
+    <h5>▶ Free Video Lectures</h5>
+    <ul>
+      <li><b>Physics Wallah (Alakh Pandey)</b> on YouTube — best free JEE Physics. Search "Alakh Pandey [chapter] JEE".</li>
+      <li><b>Namo Kaul (Unacademy)</b> — Optics, Electrostatics. Very exam-focused.</li>
+      <li><b>Vedantu JEE</b> — Good for revision lectures and PYQ sessions.</li>
+    </ul>
+  </div>
+
+  <h3 class="grp">Chemistry</h3>
+  <div class="res-card">
+    <h5>📚 Books</h5>
+    <ul>
+      <li><b>NCERT Chemistry XI & XII</b> — PRIMARY source. Read line by line. Inorganic questions are almost lifted from NCERT.</li>
+      <li><b>OP Tandon — Physical Chemistry</b> — For Physical Chemistry numericals. Better depth than NCERT.</li>
+      <li><b>MS Chauhan — Organic Chemistry</b> — Best named-reactions and mechanisms guide for JEE.</li>
+    </ul>
+  </div>
+  <div class="res-card">
+    <h5>▶ Free Video Lectures</h5>
+    <ul>
+      <li><b>Physics Wallah (Prashant Jain)</b> — Excellent Organic Chemistry series on YouTube.</li>
+      <li><b>Paaras Thakur (PW)</b> — Physical Chemistry, very JEE-aligned.</li>
+      <li><b>AJ Sir (Vedantu)</b> — Inorganic Chemistry. Fast, dense, perfect for revision.</li>
+    </ul>
+  </div>
+
+  <h3 class="grp">Mathematics</h3>
+  <div class="res-card">
+    <h5>📚 Books</h5>
+    <ul>
+      <li><b>RD Sharma XI & XII</b> — Start here if basics are weak. Do all examples first.</li>
+      <li><b>Cengage Maths (G. Tewani)</b> — Gold standard for JEE Maths problem practice. Graded difficulty.</li>
+      <li><b>Arihant Skills in Mathematics</b> — Coordinate Geometry and Algebra deep dives.</li>
+    </ul>
+  </div>
+  <div class="res-card">
+    <h5>▶ Free Video Lectures</h5>
+    <ul>
+      <li><b>Mathongo (Aman Dhattarwal)</b> — Best free JEE Maths on YouTube. Calculus & Algebra especially strong.</li>
+      <li><b>Mohit Tyagi</b> — Deep, concept-first. Excellent for Calculus.</li>
+      <li><b>NJ Sir (Unacademy)</b> — Coordinate Geometry and Vectors.</li>
+    </ul>
+  </div>
+
+  <h3 class="grp">Mock Tests & PYQ Platforms</h3>
+  <div class="res-card">
+    <ul>
+      <li><b>NTA Practice Centre</b> (nta.ac.in) — Official free mock interface. Closest to real exam.</li>
+      <li><b>PW JEE Test Series</b> (pw.live) — Very affordable paid mocks, good quality.</li>
+      <li><b>Disha / MTG 41 Years Chapterwise PYQ</b> books — essential. Do chapter-wise before full mocks.</li>
+      <li><b>Embibe / Testbook</b> — Free limited mocks available for supplement.</li>
+    </ul>
+  </div>
+
+  <div class="box red" style="margin-top:22px">
+    <h5>⚠️ Syllabus data correction</h5>
+    <p>The original tracker mixed active JEE topics with legacy chapters. For the current baseline, the tracker excludes <b>States of Matter, Hydrogen, s-Block, Environmental Chemistry, Solid State, Surface Chemistry, Metallurgy, Polymers and Chemistry in Everyday Life</b> from the active progress totals. These are kept in the source data only so old saved progress does not break. Re-check this section when NTA publishes the official JEE 2027 syllabus.</p>
+  </div>
+</div>
+
+<!-- ===== EXAM TIPS ===== -->
+<div class="view" id="view-examtips">
+  <h2 class="sec">Exam Tips & Mindset</h2>
+  <h3 class="grp">In the exam hall</h3>
+  <div id="examHallList"></div>
+  <h3 class="grp">Negative marking — rules to never break</h3>
+  <div id="negMarkList"></div>
+  <h3 class="grp">Final month habits</h3>
+  <div id="finalMonthList"></div>
+  <div class="box blue" style="margin-top:20px">
+    <h5>One last honest note</h5>
+    5 months with a full Class 11 backlog is hard, not impossible. The students who fail this challenge waste the first month planning instead of doing. The students who make it open a book today — even badly — and course-correct as they go. Open Physics Wallah on Rotational Motion tonight. That's the move.
+  </div>
+</div>
+
+<!-- ===== ERROR LOG ===== -->
+<div class="view" id="view-errorlog">
+  <h2 class="sec">Error Log</h2>
+  <p class="intro">Log every mistake after every mock. Review for 10 min before each attempt. By December this log tells you exactly where your remaining marks are hiding.</p>
+  <div class="log-form">
+    <label>Chapter / Subtopic</label>
+    <input type="text" id="logChapter" placeholder="e.g. Rotational Motion — Moment of Inertia">
+    <label>Why I got it wrong</label>
+    <select id="logReason">
+      <option>Silly / careless mistake</option>
+      <option>Concept gap — didn't understand</option>
+      <option>Didn't know the formula</option>
+      <option>Ran out of time</option>
+      <option>Misread the question</option>
+      <option>Guessed and lost negative marks</option>
+      <option>Other</option>
+    </select>
+    <label>What I'll do to fix it</label>
+    <textarea id="logFix" placeholder="e.g. Redo all MI derivations from HC Verma, then 10 PYQs"></textarea>
+    <label>Mock score this session (optional)</label>
+    <input type="text" id="logScore" placeholder="e.g. 142/300 — Physics 38, Chem 62, Maths 42">
+    <button class="btn-primary" onclick="addLogEntry()">Add to Error Log</button>
+  </div>
+  <div id="logEntries"></div>
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div class="view" id="view-settings">
+  <h2 class="sec">Settings & Data</h2>
+  <p class="intro">Manage your progress data. Everything is stored in your browser — it doesn't go to any server.</p>
+
+  <div class="box surface" style="margin-bottom:20px">
+    <h5>📦 What is Export / Import?</h5>
+    <p style="margin-top:6px; color:var(--text2); font-size:13px; line-height:1.7">
+      Your ticked chapters, subtopics, phase tasks, and error log entries are all saved in your browser's <b style="color:var(--text)">localStorage</b> — a small private storage built into every browser, tied to this device and this browser only.
+      <br><br>
+      <b style="color:var(--text)">Export</b> downloads all your progress as a <code style="background:var(--surface3);padding:2px 6px;border-radius:4px;font-size:12px">.json</code> backup file to your device. Think of it like a save file.
+      <br><br>
+      <b style="color:var(--text)">Import</b> loads a previously exported file and restores all your progress. Use this when you switch devices (phone ↔ laptop) or browsers.
+      <br><br>
+      <b style="color:var(--red)">Important:</b> If you clear your browser's site data or cache, your progress is erased. Export a backup regularly — especially before clearing your browser.
+    </p>
+  </div>
+
+  <div class="settings-card">
+    <div class="settings-row">
+      <div class="sr-info">
+        <div class="sr-title">💾 Export Progress</div>
+        <div class="sr-desc">Download all your ticked chapters, subtopics, phase tasks, and error log as a .json file. Store it safely.</div>
+      </div>
+      <button class="btn-sec" onclick="exportData()">Download Backup</button>
+    </div>
+    <div class="settings-row">
+      <div class="sr-info">
+        <div class="sr-title">📂 Import Progress</div>
+        <div class="sr-desc">Restore progress from a previously exported .json file. This will replace your current progress on this device.</div>
+      </div>
+      <button class="btn-sec" onclick="document.getElementById('importFile').click()">Load Backup</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+    </div>
+    <div class="settings-row">
+      <div class="sr-info">
+        <div class="sr-title">🎯 Planning Target Date</div>
+        <div class="sr-desc">JEE Main 2027 Session 1 dates have not been published yet. This is a planning target, not an official exam date.</div>
+      </div>
+      <input id="targetDate" type="date" style="background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:8px 10px;border-radius:8px">
+    </div>
+    <div class="settings-row">
+      <div class="sr-info">
+        <div class="sr-title">🗑 Reset Everything</div>
+        <div class="sr-desc">Erase all ticked chapters, subtopics, phase tasks, and error log entries. This cannot be undone — export first.</div>
+      </div>
+      <button class="btn-danger" onclick="confirmReset()">Reset All Data</button>
+    </div>
+  </div>
+
+  <div class="box gold" style="margin-top:4px">
+    <h5>💡 Tip for multi-device study</h5>
+    Export your backup after every study session and save it to Google Drive or WhatsApp yourself. Then when you switch devices, import that file. This keeps your progress synced manually without needing an account.
+  </div>
+</div>
+
+
+<!-- ===== CRITICAL NOTES ===== -->
+<div class="view" id="view-notes">
+  <div class="page-hero note-hero">
+    <div><span class="eyebrow">MEMORY VAULT</span><h2>Critical Notes</h2><p>Anything you absolutely do not want to forget — formulas, reminders, weak points, strategies, promises to yourself.</p></div>
+    <div class="hero-icon">📌</div>
+  </div>
+  <div class="note-layout">
+    <div class="note-composer glass-card">
+      <div class="card-title-row"><div><h3>Add something important</h3><span>It will stay saved on this device.</span></div><span class="mini-badge">PRIVATE</span></div>
+      <input id="criticalTitle" class="nice-input" placeholder="Title — e.g. Never forget this formula">
+      <textarea id="criticalBody" class="nice-textarea" placeholder="Write the thing you want future-you to remember…"></textarea>
+      <div class="composer-row">
+        <select id="criticalTag" class="nice-select"><option>🔥 Must Remember</option><option>📐 Formula</option><option>🧪 Reaction</option><option>⚠️ Weak Point</option><option>🎯 Strategy</option><option>🧠 Personal</option></select>
+        <button class="glow-btn" onclick="addCriticalNote()">＋ Save Note</button>
+      </div>
+    </div>
+    <div class="notes-list-wrap">
+      <div class="section-line"><h3>Your saved notes</h3><span id="notesCount">0 notes</span></div>
+      <div id="criticalNotesList" class="critical-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== COUNTDOWN ===== -->
+<div class="view" id="view-countdown">
+  <div class="page-hero countdown-hero">
+    <div><span class="eyebrow">THE CLOCK IS RUNNING</span><h2>JEE Countdown</h2><p>Set your planning target and watch the remaining time tick down to the second.</p></div>
+    <div class="hero-icon">⏳</div>
+  </div>
+  <div class="countdown-panel glass-card">
+    <div class="countdown-top">
+      <div><span class="muted-label">TARGET</span><h3 id="countdownTargetLabel">JEE Main 2027 — Planning Target</h3></div>
+      <div class="countdown-date"><input id="countdownDate" type="date" class="nice-input date-input"></div>
+    </div>
+    <div class="timer-grid">
+      <div class="timer-unit"><strong id="cdDays">0</strong><span>DAYS</span></div>
+      <div class="timer-sep">:</div>
+      <div class="timer-unit"><strong id="cdHours">00</strong><span>HOURS</span></div>
+      <div class="timer-sep">:</div>
+      <div class="timer-unit"><strong id="cdMinutes">00</strong><span>MINUTES</span></div>
+      <div class="timer-sep">:</div>
+      <div class="timer-unit"><strong id="cdSeconds">00</strong><span>SECONDS</span></div>
+    </div>
+    <div class="countdown-foot"><span>⚡ Every second is one more second you can use.</span><button class="soft-btn" onclick="syncCountdownToSettings()">Use settings target</button></div>
+  </div>
+  <div class="countdown-tips">
+    <div class="tip-card"><b>Today</b><span id="countdownToday">—</span></div>
+    <div class="tip-card"><b>Target date</b><span id="countdownPretty">—</span></div>
+    <div class="tip-card"><b>Status</b><span id="countdownStatus">Planning</span></div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+<div class="toast" id="toast">✓ Saved</div>
+
+<script>
+/* ================================================================
+   DATA — each chapter: [name, weight%, tier, subtopics[], guide{}]
+   guide: { how: string, time: string, books: [], yt: [], tip: string }
+================================================================ */
+const STORE_KEY = "jeeTracker2027_v2";
+
+const chapters = {
+/* =================== PHYSICS XI =================== */
+phy11: [
+  ["Units & Measurements", 4.24, "high",
+    ["SI units and dimensional formula of all base quantities","Dimensional analysis — checking equations and deriving formulas","Significant figures rules and rounding","Errors: absolute, relative, percentage; propagation rules","Vernier calliper and screw gauge: least count and readings","Order of magnitude estimation problems"],
+    {how:"Learn SI units + dimensional formula table first. Then spend 80% of time on dimensional analysis problems — JEE loves these. Error chapter needs only 1 session.",books:["HC Verma Ch 1-2","NCERT XI Ch 1-2"],yt:["PW Alakh Pandey — Units & Measurements JEE"],time:"4–5 days",tip:"Make a one-page formula sheet of all dimensional formulas. Refer daily until exam."}
+  ],
+  ["Motion in a Straight Line", 2.63, "mid",
+    ["Displacement, velocity, acceleration — definitions and graphs","Equations of motion for uniform acceleration (5 equations)","Motion under gravity — free fall, projectile basics","Relative motion in 1D","Graphical analysis — x-t, v-t, a-t graphs"],
+    {how:"Start with v-t graph interpretation — most JEE questions are graphical. Master the 5 equations. Free fall problems are very pattern-repetitive.",books:["HC Verma Ch 3","NCERT XI Ch 3"],yt:["PW Alakh Pandey — Kinematics 1D"],time:"3–4 days",tip:"Every kinematics problem: write down what's given, what's unknown, which equation to use. Don't visualize blindly."}
+  ],
+  ["Motion in a Plane", 2.92, "mid",
+    ["Vectors: addition, subtraction, dot and cross products","Projectile motion — time of flight, range, max height, trajectory equation","Uniform circular motion — centripetal acceleration, banking, conical pendulum","Relative motion in 2D","River-boat problems"],
+    {how:"Projectile motion is the exam workhorse here — do 20+ PYQs on projectile alone. Learn vector formulas cold before starting this chapter.",books:["HC Verma Ch 2+5","NCERT XI Ch 4"],yt:["PW — Projectile Motion JEE","Mohit Tyagi — Vectors"],time:"5–6 days",tip:"Memorize the projectile trajectory equation y = x·tanθ − gx²/(2u²cos²θ). Most 'hard' projectile questions are just this with substitution."}
+  ],
+  ["Newton's Laws of Motion", 2.05, "low",
+    ["Newton's 1st, 2nd, 3rd laws with examples","Free body diagram (FBD) method — essential skill","Normal force, tension, friction (static, kinetic, angle of repose)","Pseudo force and non-inertial frames","Constraint motion (Atwood machine, wedge-block)"],
+    {how:"FBD is a skill, not a concept. Draw FBD for EVERY problem until it's automatic. Most students skip this and then can't solve connected-body problems.",books:["HC Verma Ch 5-7","DC Pandey NLM"],yt:["PW — Newton's Laws JEE"],time:"5–6 days",tip:"Check: every FBD must have the same number of forces as the number of contact surfaces + gravity. If not, you've missed a force."}
+  ],
+  ["Work, Energy & Power", 2.37, "mid",
+    ["Work done by constant and variable force (integration method)","Work-energy theorem","Kinetic energy, potential energy (gravitational + spring)","Conservation of mechanical energy","Power — average and instantaneous","Conservative vs non-conservative forces","Potential energy curves — stable/unstable equilibrium"],
+    {how:"Work-energy theorem solves 60% of this chapter's questions faster than F=ma. Learn it first, apply it by default.",books:["HC Verma Ch 8-9","NCERT XI Ch 6"],yt:["PW — Work Energy Power JEE"],time:"4–5 days",tip:"Spring problems — always use ½kx² for PE, never force × displacement."}
+  ],
+  ["Centre of Mass & System of Particles", 2.56, "mid",
+    ["Centre of mass of discrete and continuous systems","Motion of COM — internal forces don't change COM velocity","Linear momentum conservation (key concept for JEE)","Impulse and impulse-momentum theorem","Collisions: elastic, inelastic, perfectly inelastic — all coefficient of restitution cases","Rocket propulsion basics"],
+    {how:"This chapter is almost entirely about conservation of momentum. Master the collision equations cold — 1D elastic, 1D inelastic, 2D oblique.",books:["HC Verma Ch 9","DC Pandey COM"],yt:["PW — COM and Collision JEE"],time:"4–5 days",tip:"COM questions often combine with energy conservation. Always check: is the collision elastic (KE conserved) or not?"}
+  ],
+  ["Rotational Motion", 4.31, "high",
+    ["Torque — definition, direction (cross product)","Moment of inertia of standard bodies (rod, disc, ring, sphere, hollow sphere)","Theorems: parallel axis and perpendicular axis","Rolling motion on inclines — acceleration and friction conditions","Angular momentum and its conservation","Combined rotational + translational dynamics"],
+    {how:"Learn MI table completely first — JEE always gives you a standard body. Then do torque + rolling problems daily for 2 weeks. This is the hardest Class 11 chapter for most students.",books:["HC Verma Ch 10","DC Pandey Rotation"],yt:["PW — Rotational Motion Full JEE","Namo Kaul — Rotation Unacademy"],time:"8–10 days",tip:"Rolling without slipping condition: v_com = rω. Every rolling problem uses this. Burn it in."}
+  ],
+  ["Gravitation", 4.49, "high",
+    ["Newton's law of gravitation, gravitational constant G","Gravitational field and potential — point mass, shell, solid sphere","Variation of g with altitude, depth, latitude, rotation","Orbital mechanics — orbital speed, time period, energy","Escape velocity derivation and value","Kepler's three laws with quantitative statements","Satellites — geostationary, polar"],
+    {how:"This is a formula-heavy chapter with predictable JEE patterns. Learn all formulas for a single night, then spend rest of time on orbital mechanics problems.",books:["HC Verma Ch 11","NCERT XI Ch 8"],yt:["PW — Gravitation JEE"],time:"5–6 days",tip:"Satellite binding energy = −(total mechanical energy). Many JEE questions ask 'how does energy change when orbit changes' — total E becomes less negative = more energy added."}
+  ],
+  ["Mechanical Properties of Solids", 2.08, "low",
+    ["Stress and strain — definitions, types","Young's modulus, Bulk modulus, Shear modulus","Elastic potential energy stored in a wire","Poisson's ratio","Stress-strain curve — proportionality limit, yield point, breaking point"],
+    {how:"Light chapter. One reading of NCERT + HC Verma + 10 PYQs is enough. Don't over-invest here.",books:["HC Verma Ch 14","NCERT XI Ch 9"],yt:["PW — Elasticity JEE (short)"],time:"2–3 days",tip:"Y, B, η relations with stress/strain are directly asked. Memorize units."}
+  ],
+  ["Mechanical Properties of Fluids", 3.00, "mid",
+    ["Pressure — absolute, gauge, Pascal's law","Buoyancy, Archimedes' principle — fully/partially submerged","Bernoulli's theorem and equation of continuity","Applications: Venturimeter, Pitot tube, Magnus effect","Viscosity — Stokes' law, terminal velocity","Surface tension — excess pressure in drops and bubbles"],
+    {how:"Bernoulli + continuity is the exam core. Learn to set up Bernoulli equation fast. Surface tension formulae (excess pressure) are frequently asked direct questions.",books:["HC Verma Ch 13","NCERT XI Ch 10"],yt:["PW — Fluid Mechanics JEE"],time:"5–6 days",tip:"Bubble vs drop: bubble has 2 surfaces (4T/r), drop has 1 surface (2T/r). Common confusion point in JEE."}
+  ],
+  ["Thermal Properties of Matter", 2.08, "low",
+    ["Temperature scales and conversions","Linear, area, volumetric expansion and coefficients","Specific heat, latent heat — calorimetry problems","Modes of heat transfer: conduction, convection, radiation","Newton's law of cooling","Stefan-Boltzmann law, Wien's law basics"],
+    {how:"Focus on calorimetry problems (mixture/phase change) and thermal conduction (series/parallel slabs). These appear most.",books:["NCERT XI Ch 11","HC Verma Ch 23"],yt:["PW — Thermal Properties JEE"],time:"3–4 days",tip:"Phase change problems: Q = mL, never ΔT = 0 at phase boundary."}
+  ],
+  ["Kinetic Theory of Gases", 2.88, "mid",
+    ["Assumptions of kinetic theory","Pressure-velocity derivation (conceptual)","RMS, average, and most probable speeds","Degrees of freedom — mono, di, polyatomic","Equipartition of energy: CV, CP, γ for all gas types","Mean free path basics"],
+    {how:"γ = CP/CV values for different gas types appear in every session. Memorize these and use them quickly. RMS speed formula is directly asked.",books:["NCERT XI Ch 13","HC Verma Ch 24"],yt:["PW — Kinetic Theory JEE"],time:"3–4 days",tip:"Monoatomic: CV=3R/2, CP=5R/2, γ=5/3. Diatomic: CV=5R/2, CP=7R/2, γ=7/5. Memorize these."}
+  ],
+  ["Thermodynamics", 3.06, "mid",
+    ["Thermodynamic processes: isothermal, adiabatic, isobaric, isochoric","Work done in each process — area under P-V curve","First law of thermodynamics","Carnot cycle — efficiency formula and significance","Second law — Kelvin-Planck and Clausius statements","Entropy (conceptual only for JEE Main)"],
+    {how:"P-V diagrams are the backbone of this chapter. Draw every process on a P-V graph. Carnot efficiency = 1 − T₂/T₁ is directly asked.",books:["HC Verma Ch 26-27","NCERT XI Ch 12"],yt:["PW — Thermodynamics JEE"],time:"5–6 days",tip:"Adiabatic process: PVγ = constant. Use γ correctly (varies by gas type)."}
+  ],
+  ["Oscillations (SHM)", 3.25, "mid",
+    ["SHM definition — restoring force proportional to displacement","x = A sin(ωt + φ) — position, velocity, acceleration in SHM","Energy in SHM — KE and PE variation, total energy constant","Spring-mass systems — horizontal, vertical, series, parallel springs","Simple pendulum — T = 2π√(L/g) and limitations","Damped and forced oscillations (conceptual)"],
+    {how:"Master the SHM energy expressions and spring systems first. Mixed spring problems (springs in series/parallel) appear regularly.",books:["HC Verma Ch 12","NCERT XI Ch 14"],yt:["PW — SHM JEE"],time:"5–6 days",tip:"Series springs: 1/k_eff = 1/k₁ + 1/k₂. Parallel: k_eff = k₁ + k₂. JEE loves these."}
+  ],
+  ["Waves", 1.94, "low",
+    ["Wave equation y = A sin(kx−ωt) — terms and physical meaning","Speed of transverse and longitudinal waves","Superposition — constructive/destructive interference","Standing waves on strings — harmonics, overtones","Beats — frequency and conditions","Doppler effect — all four cases (source/observer moving)"],
+    {how:"Doppler effect is the most asked. Learn the formula and all four cases cleanly. Beats = frequency difference — direct questions.",books:["HC Verma Ch 15-16","NCERT XI Ch 15"],yt:["PW — Waves JEE"],time:"4–5 days",tip:"Doppler: f_observed = f_source × (v ± v_observer)/(v ∓ v_source). Use upper signs when approaching."}
+  ],
+  ["Mathematical Tools", 0.0, "low",
+    ["Basic differentiation — power rule, chain rule, product rule","Basic integration — standard integrals","Trigonometric identities used in Physics"],
+    {how:"This is a utility chapter, not an exam chapter. Spend 1–2 hours only if your calculus basics are shaky. Otherwise skip.",books:["HC Verma Appendix","NCERT XI Appendix"],yt:["Khan Academy — Basic Calculus"],time:"1–2 hrs",tip:"If you know dy/dx of sinx, cosx, xⁿ and basic integrals, this is done."}
+  ],
+],
+
+/* =================== PHYSICS XII =================== */
+phy12: [
+  ["Electric Charges & Fields", 3.18, "mid",
+    ["Coulomb's law — vector form, superposition principle","Electric field due to point charge, dipole, line charge, sheet, ring","Electric field lines — properties","Electric flux — Gauss's law and its applications","Continuous charge distributions: charged sphere, cylinder, sheet"],
+    {how:"Gauss's law applications are the JEE focus — closed surfaces for sphere, cylinder, sheet. Draw the Gaussian surface first for every problem.",books:["HC Verma Ch 29-30","NCERT XII Ch 1"],yt:["PW — Electric Charges & Fields JEE","Namo Kaul — Gauss's Law"],time:"5–6 days",tip:"Gauss's law: ΦE = q_enc/ε₀. Inside a conductor, E = 0 always."}
+  ],
+  ["Electrostatic Potential & Capacitance", 4.49, "high",
+    ["Electric potential due to point charge, dipole, ring","Potential energy of a system of charges","Equipotential surfaces — properties","Conductors in electrostatic equilibrium — surface charge density","Capacitance — parallel plate, spherical, cylindrical","Series and parallel capacitor combinations","Energy stored in a capacitor — U = ½CV²","Dielectrics — polarization, dielectric constant, effect on capacitance"],
+    {how:"Capacitor combinations (series/parallel) + energy questions dominate JEE. Dielectric insertion problems (what changes when dielectric is added?) are very high-frequency.",books:["HC Verma Ch 31-32","NCERT XII Ch 2"],yt:["PW — Capacitors JEE Full Chapter","Namo Kaul — Capacitance"],time:"7–8 days",tip:"Battery connected vs disconnected makes a BIG difference for dielectric problems. If connected: V constant. If disconnected: Q constant. JEE exploits this constantly."}
+  ],
+  ["Current Electricity", 6.57, "high",
+    ["Ohm's law, resistivity, drift velocity, mobility","Resistance: combinations (series/parallel), temperature dependence","EMF, internal resistance, terminal voltage","Kirchhoff's laws (KVL and KCL) — mesh and node analysis","Wheatstone bridge — balance condition","Potentiometer — EMF comparison, internal resistance measurement","Meter bridge — principle and use","Power in circuits — Joule's law"],
+    {how:"Kirchhoff's laws + Wheatstone bridge = ~50% of this chapter's JEE questions. Practise at least 20 circuit problems. This is the highest-weightage JEE chapter overall.",books:["HC Verma Ch 32-33","NCERT XII Ch 3","DC Pandey Current"],yt:["PW — Current Electricity Complete JEE","Namo Kaul — Kirchhoff's Laws"],time:"10–12 days",tip:"Wheatstone bridge balanced: P/Q = R/S → no current through galvanometer. Know this instinctively."}
+  ],
+  ["Moving Charges & Magnetism", 2.89, "mid",
+    ["Magnetic force on a moving charge — F = qv×B","Motion of charged particle in magnetic field — circular motion","Magnetic force on current-carrying conductor","Torque on current loop — NIAM","Biot-Savart law — magnetic field due to straight wire, circular loop","Ampere's circuital law — solenoid and toroid","Moving coil galvanometer — conversion to voltmeter/ammeter"],
+    {how:"Biot-Savart vs Ampere's law: learn which to use when. Circular particle motion in B-field problems are very common and pattern-repetitive.",books:["HC Verma Ch 34-35","NCERT XII Ch 4"],yt:["PW — Magnetism JEE"],time:"6–7 days",tip:"Particle in crossed E and B fields: velocity selector condition v = E/B. Very frequently asked."}
+  ],
+  ["Magnetism & Matter", 1.90, "low",
+    ["Bar magnet — field along axis and equatorial line","Magnetic dipole moment","Earth's magnetism — angle of declination, inclination, horizontal component","Para, dia, ferromagnetic materials — properties and differences","Hysteresis loop — retentivity, coercivity"],
+    {how:"Light chapter. One thorough NCERT reading + 10 PYQs. Focus on para/dia/ferro differences and bar magnet field formulas.",books:["NCERT XII Ch 5","HC Verma Ch 36"],yt:["PW — Magnetism & Matter (short)"],time:"2–3 days",tip:"Axis field of bar magnet = 2μ₀M/4πr³. Equatorial = μ₀M/4πr³. Axis is 2× equatorial — asked directly."}
+  ],
+  ["Electromagnetic Induction", 3.25, "mid",
+    ["Faraday's laws of electromagnetic induction","Lenz's law — direction of induced current","Motional EMF — e = Bvl","Self-inductance — definition, energy stored in inductor","Mutual inductance — coefficient of coupling","AC generator — working principle","Eddy currents — applications and disadvantages"],
+    {how:"Lenz's law problems with moving conductors/rotating coils are the most common. Draw the flux change carefully for every problem.",books:["HC Verma Ch 38","NCERT XII Ch 6"],yt:["PW — EMI JEE Complete","Namo Kaul — Electromagnetic Induction"],time:"6–7 days",tip:"Motional EMF: e = Bvl sin θ. For a rotating rod about one end: e = ½Bωl²."}
+  ],
+  ["Alternating Current", 3.73, "mid",
+    ["AC basics — peak, RMS, average values; their relationships","Phasor representation","Resistor, inductor, capacitor in AC — individual and combined circuits","Impedance, phase angle — formulas for R-L, R-C, R-L-C","Resonance in series LC — resonant frequency, Q-factor","Power in AC — average power, power factor","Transformers — step-up, step-down, efficiency"],
+    {how:"Phasor diagrams are the key skill here. Draw phasors for every problem. Resonance condition (XL = XC → ω = 1/√LC) appears in almost every session.",books:["HC Verma Ch 39","NCERT XII Ch 7"],yt:["PW — Alternating Current JEE","Prateek Jain — AC Circuits"],time:"6–7 days",tip:"Power factor = cos φ. Purely resistive: P = V_rms × I_rms. With reactance: P = V_rms × I_rms × cos φ."}
+  ],
+  ["Electromagnetic Waves", 2.96, "mid",
+    ["Maxwell's equations — what they mean (conceptual)","Displacement current — Ampere's law correction","EM wave — transverse nature, E and B relationship","Speed of EM waves in vacuum — c = 1/√(μ₀ε₀)","EM spectrum — wavelength ranges for each type","Energy, intensity, momentum of EM waves"],
+    {how:"Mostly factual/conceptual for JEE Main. One good reading of NCERT covers 80% of questions. Speed formula and displacement current are the calculation parts.",books:["NCERT XII Ch 8","HC Verma Ch 40"],yt:["PW — EM Waves (quick revision)"],time:"2–3 days",tip:"EM spectrum order: Radio → Micro → IR → Visible → UV → X-ray → Gamma. Memorize wavelength ranges."}
+  ],
+  ["Ray Optics & Optical Instruments", 5.04, "high",
+    ["Reflection — laws, plane mirror (virtual image, same size)","Curved mirrors — mirror formula 1/v + 1/u = 1/f, magnification","Refraction — Snell's law, refractive index","Total internal reflection — critical angle, optical fibre","Refraction at spherical surfaces — formula","Thin lens formula, lens maker's equation","Power of lens — combination of lenses","Refraction through prism — angle of deviation, minimum deviation","Scattering of light (Rayleigh scattering)","Human eye — defects and correction","Microscope and telescope — magnification formulas"],
+    {how:"Mirror + lens formula questions are the highest frequency. Master sign convention (Cartesian) absolutely cold — wrong signs kill accuracy. Prism deviation problems need practice.",books:["HC Verma Ch 18-20","NCERT XII Ch 9"],yt:["PW — Ray Optics Full JEE","Mohit Tyagi — Optics"],time:"8–10 days",tip:"Sign convention: distances measured from pole/optical centre. Object on left (usual): u is negative. Image on right of lens: v is positive."}
+  ],
+  ["Wave Optics", 2.30, "low",
+    ["Huygens' principle — wave front, propagation","Young's Double Slit Experiment (YDSE) — fringe width, path difference","Conditions for constructive/destructive interference","Diffraction — single slit, width of central maximum","Polarisation — Malus law, Brewster's law"],
+    {how:"YDSE questions dominate this chapter for JEE. Get the fringe width formula and path difference conditions right. Polarisation = Malus law questions are 1–2 per paper.",books:["HC Verma Ch 17","NCERT XII Ch 10"],yt:["PW — Wave Optics JEE"],time:"4–5 days",tip:"YDSE fringe width β = λD/d. Path difference = dsinθ ≈ dy/D for small θ."}
+  ],
+  ["Dual Nature of Radiation & Matter", 4.05, "high",
+    ["Photoelectric effect — Einstein's equation, threshold frequency","Work function, stopping potential, saturation current","Dependence of photoelectric current on intensity, frequency, potential","de Broglie wavelength — λ = h/mv and λ = h/√(2mK)","Davisson-Germer experiment (conceptual)","Heisenberg's uncertainty principle (conceptual)"],
+    {how:"Einstein's photoelectric equation is asked directly in every other session. Master it. de Broglie wavelength calculations are straight substitution.",books:["NCERT XII Ch 11","HC Verma Ch 42"],yt:["PW — Dual Nature JEE"],time:"4–5 days",tip:"Stopping potential V₀: eV₀ = hf − φ. Maximum KE = hf − φ = eV₀. These three are the same thing."}
+  ],
+  ["Atoms", 2.48, "mid",
+    ["Rutherford model — observations and conclusions","Bohr model — postulates, allowed orbits","Energy levels of hydrogen atom — En = −13.6/n² eV","Spectral series — Lyman, Balmer, Paschen — wavelength formula","Rydberg constant","Transition energies and photon wavelength"],
+    {how:"Bohr model energy + spectral series appear directly. Know the energy level formula and be able to calculate transition energies quickly.",books:["NCERT XII Ch 12","HC Verma Ch 43"],yt:["PW — Atoms JEE"],time:"3–4 days",tip:"Energy of nth level = −13.6/n² eV. Balmer series: visible light. Lyman: UV. Paschen/Brackett: IR. Remember this."}
+  ],
+  ["Nuclei", 3.14, "mid",
+    ["Nucleus: composition, size, density (approx constant)","Mass defect and binding energy — BE/A curve","Radioactive decay — alpha, beta, gamma","Decay law: N = N₀e^(−λt), half-life T₁/₂ = ln2/λ","Nuclear fission and fusion — energy released","Q-value of nuclear reactions"],
+    {how:"Decay law + half-life calculations appear in most sessions — these are straightforward if you know the formula. BE/A curve graph questions are factual.",books:["NCERT XII Ch 13","HC Verma Ch 43"],yt:["PW — Nuclei JEE"],time:"4–5 days",tip:"Activity A = λN. After n half-lives, N = N₀/2ⁿ. Know both forms."}
+  ],
+  ["Semiconductor Electronics", 4.75, "high",
+    ["Energy bands — conductor, semiconductor, insulator comparison","Intrinsic and extrinsic (n-type, p-type) semiconductors","p-n junction diode — formation, depletion layer, forward/reverse bias","I-V characteristics of p-n diode","Half-wave and full-wave rectifiers","Zener diode — voltage regulation","Transistor (NPN, PNP) — working, CE configuration, current gain β","Logic gates: AND, OR, NOT, NAND, NOR, XOR — truth tables","Boolean algebra basics"],
+    {how:"Logic gate truth tables are directly asked in almost every session — memorize all 6 gates cold. Transistor CE configuration equations are also frequently tested.",books:["NCERT XII Ch 14","HC Verma Ch 45"],yt:["PW — Semiconductor Electronics JEE Full","Namo Kaul — Semiconductors"],time:"6–7 days",tip:"NAND and NOR are universal gates — every other gate can be made from them. JEE asks this."}
+  ],
+],
+
+/* =================== CHEMISTRY XI =================== */
+chem11: [
+  ["Atomic Structure", 3.34, "mid",
+    ["Bohr model of hydrogen — energy, radius, velocity formulas","Wave-particle duality — de Broglie","Heisenberg uncertainty principle","Quantum numbers: n, l, m, s — values and meaning","Shapes of orbitals: s, p, d","Aufbau principle, Pauli exclusion, Hund's rule","Electronic configuration — ground state for all elements","Photoelectric effect (as related to atomic structure)"],
+    {how:"Electronic configuration up to element 36 (Kr) — memorize these cold. Quantum number problems are direct questions. Shapes of orbitals appear in image-based MCQs.",books:["NCERT XI Ch 2","Atkins Physical Chemistry (optional)"],yt:["PW Prateek Jain — Atomic Structure JEE"],time:"6–7 days",tip:"Exceptions: Cr = [Ar]3d⁵4s¹, Cu = [Ar]3d¹⁰4s¹. These appear in JEE directly."}
+  ],
+  ["Some Basic Concepts of Chemistry", 2.82, "mid",
+    ["Mole concept — Avogadro's number, molar mass","Molarity, molality, normality, mole fraction","Stoichiometry — limiting reagent, % yield","Empirical and molecular formula determination","Equivalent weight and N-factor for acids/bases/salts","Balancing redox reactions by oxidation number method"],
+    {how:"Mole concept numericals appear in every session. Practice 20+ calculation problems. N-factor is tested frequently in both normality and titration contexts.",books:["NCERT XI Ch 1","OP Tandon Physical"],yt:["PW Paaras Thakur — Mole Concept"],time:"5–6 days",tip:"Learn to calculate moles from: (i) mass/molar mass, (ii) volume at STP/22.4, (iii) number of particles/6.022×10²³ — all three forms appear."}
+  ],
+  ["Classification of Elements & Periodicity", 1.93, "low",
+    ["Periodicity — trends in atomic radius, ionic radius","Ionization energy: 1st, 2nd, successive — trends and exceptions","Electron affinity — trends and exceptions","Electronegativity — Pauling scale, trends","Metallic character, valency, oxidation state trends","Anomalous behavior of 2nd period elements (Li, Be, B, C)"],
+    {how:"This is almost entirely trend-based — learn the direction of each trend for periods and groups. Focus on exceptions (Mg>Al in IE, BE<N in EA).",books:["NCERT XI Ch 3"],yt:["PW — Periodic Table Trends JEE"],time:"3–4 days",tip:"IE order: N>O (half-filled 2p stability), Be>B. EA order: Cl>F (F has small size, electron repulsion). These two exceptions appear every year."}
+  ],
+  ["Chemical Bonding & Molecular Structure", 3.34, "mid",
+    ["Ionic bonding — lattice energy, Born-Haber cycle","Covalent bonding — Lewis structures, formal charge","VSEPR theory — geometry and bond angles for all shapes","Valence bond theory — hybridization (sp, sp², sp³, sp³d, sp³d²)","Hybridization of common molecules: CH₄, NH₃, H₂O, PCl₅, SF₆","Molecular orbital theory — bonding/antibonding, bond order","Hydrogen bonding — inter and intramolecular"],
+    {how:"VSEPR + hybridization questions appear in every session. Learn the shape and bond angle for every standard molecule. Bond order from MO theory is also directly asked.",books:["NCERT XI Ch 4","JD Lee — Chemical Bonding"],yt:["PW Prateek Jain — Chemical Bonding JEE"],time:"7–8 days",tip:"Hybridization quick rule: steric number = σ bonds + lone pairs. sp=2, sp²=3, sp³=4, sp³d=5, sp³d²=6."}
+  ],
+  ["States of Matter", 1.89, "low",
+    ["Ideal gas equation PV = nRT — all four gas laws from it","Dalton's law of partial pressures","Kinetic molecular theory — RMS, average, most probable speeds","Real gases — van der Waals equation, a and b constants","Compressibility factor Z — ideal vs real behavior","Liquefaction of gases — critical temperature"],
+    {how:"One NCERT reading + van der Waals equation problems covers this. Very formula-based with direct questions.",books:["NCERT XI Ch 5","OP Tandon"],yt:["PW — States of Matter JEE"],time:"3–4 days",tip:"van der Waals: (P + an²/V²)(V−nb) = nRT. 'a' corrects for intermolecular attraction, 'b' for volume."}
+  ],
+  ["Chemical Thermodynamics & Energetics", 3.65, "mid",
+    ["System, surroundings, state functions — definitions","Internal energy ΔU, enthalpy ΔH = ΔU + ΔngRT","Hess's law of constant heat summation","Standard enthalpies: formation, combustion, atomization, bond dissociation","Bond energy calculations for ΔH","Entropy — disorder, ΔS for phase changes","Gibbs free energy — ΔG = ΔH − TΔS, spontaneity","Third law of thermodynamics"],
+    {how:"Hess's law problems and bond energy calculations are the most tested numerical types. ΔG spontaneity table (all four ΔH/ΔS combinations) appears as direct MCQ.",books:["NCERT XI Ch 6","OP Tandon Thermodynamics"],yt:["PW Paaras Thakur — Thermodynamics Chem JEE"],time:"6–7 days",tip:"ΔG° = −RT ln K = −nFE°. These three are connected — JEE asks you to switch between them."}
+  ],
+  ["Redox Reactions", 1.75, "low",
+    ["Oxidation state rules — all elements in compounds","Identifying oxidising and reducing agents","Balancing redox reactions by oxidation number change and half-reaction method","Disproportionation reactions"],
+    {how:"Quick chapter. Master oxidation state rules (especially for S, N, Mn, Cr, Cl in compounds) — these are building blocks for electrochemistry later.",books:["NCERT XI Ch 8"],yt:["PW — Redox Reactions Quick Revision"],time:"2–3 days",tip:"OS of O is usually −2 (except in OF₂ = +2, H₂O₂ = −1, O₂²⁻ = −½). These exceptions are directly asked."}
+  ],
+  ["Equilibrium", 4.44, "high",
+    ["Law of mass action — Kc and Kp expressions","Relationship between Kc and Kp: Kp = Kc(RT)^Δng","Reaction quotient Q — predicting reaction direction","Le Chatelier's principle — effect of T, P, concentration, catalyst","Acids and bases — Arrhenius, Bronsted-Lowry, Lewis theories","pH, pOH, pKa, pKb calculations","Buffer solutions — Henderson-Hasselbalch equation","Solubility product Ksp — common ion effect"],
+    {how:"Kc/Kp calculations + ICE table method + Le Chatelier's predictions are the exam core. Do 25+ numerical problems on equilibrium constants.",books:["NCERT XI Ch 7","OP Tandon Physical"],yt:["PW Paaras Thakur — Equilibrium JEE Full"],time:"8–9 days",tip:"If Q < K: reaction proceeds forward. If Q > K: backward. If Q = K: at equilibrium. Direct questions every session."}
+  ],
+  ["The p-Block Elements", 1.79, "low",
+    ["Group 13: Boron — borax, boric acid, diborane, electron deficient nature","Group 14: Carbon allotropes (graphite, diamond, fullerene), silicates","Group 13–14 anomalous behavior vs rest of group"],
+    {how:"Quick read from NCERT. Focus on properties and uses of boron compounds and carbon allotropes.",books:["NCERT XI Ch 11"],yt:["PW — p-Block Gr 13-14 JEE"],time:"2 days",tip:"Graphite: conductor (delocalized π electrons), soft (weak van der Waals between layers). Diamond: non-conductor, hardest natural substance."}
+  ],
+  ["GOC: IUPAC Nomenclature", 0.10, "low",
+    ["IUPAC rules for alkanes, alkenes, alkynes","Naming with halogen, OH, CHO, COOH, NH₂ substituents","Priority order for functional groups (highest = COOH)"],
+    {how:"Foundation for all of Organic Chemistry. Don't skip this. One focused session.",books:["NCERT XI Ch 12","MS Chauhan GOC"],yt:["PW Prashant Jain — IUPAC Nomenclature"],time:"1–2 days",tip:"Priority order: COOH > COOR > COCl > CHO > C=O > OH > NH₂ > C=C > C≡C > halogen. Memorize."}
+  ],
+  ["GOC: Isomerism", 0.27, "low",
+    ["Structural isomers: chain, position, functional, metamerism, tautomerism","Stereoisomers: geometric (cis/trans), optical (R/S configuration)","Chirality — chiral centre, enantiomers, diastereomers","Fischer projections basics"],
+    {how:"Optical isomerism (R/S) and chirality questions appear directly in JEE. Learn CIP rules for R/S assignment.",books:["NCERT XI Ch 13-14","MS Chauhan Isomerism"],yt:["PW Prashant Jain — Stereochemistry"],time:"3–4 days",tip:"For R/S: arrange groups by decreasing atomic number. If rotation of 1→2→3 is clockwise with lowest group pointing away = R."}
+  ],
+  ["GOC: General Organic Chemistry", 1.20, "low",
+    ["Inductive effect (I) — +I and −I groups","Resonance / mesomeric effect (R or M)","Hyperconjugation — number of α-hydrogens","Electrophiles and nucleophiles — examples","Carbocation, carbanion, free radical stability","Types of organic reactions: SN1, SN2, E1, E2 (overview)"],
+    {how:"This chapter controls your accuracy in ALL subsequent organic chapters. Do not rush it. Stability order of carbocations and effect on reaction mechanism are tested repeatedly.",books:["MS Chauhan GOC","NCERT XI Ch 12"],yt:["PW Prashant Jain — GOC Complete JEE"],time:"6–7 days",tip:"Carbocation stability: 3°>2°>1°>CH₃. Carbanion: reverse. Allylic/benzylic cations are more stable than 2° due to resonance."}
+  ],
+  ["Hydrocarbons", 3.03, "mid",
+    ["Alkanes: free radical halogenation mechanism (chain reaction)","Alkenes: addition reactions — Markovnikov, anti-Markovnikov (HBr/peroxide)","Alkenes: ozonolysis, oxidation, polymerization","Alkynes: acidic character, addition of H₂, HX, H₂O","Benzene: resonance structure, stability, electrophilic aromatic substitution (EAS)","EAS directing groups: ortho/para vs meta directors","Birch reduction of benzene"],
+    {how:"Markovnikov's rule + EAS direction effects appear in every session. Learn directing group effect (o/p vs m) and the mechanism for halogenation/nitration.",books:["NCERT XI Ch 13-14","MS Chauhan Organic"],yt:["PW Prashant Jain — Hydrocarbons JEE"],time:"6–7 days",tip:"Electron-donating groups (OH, NH₂, alkyl) → o/p directors. Electron-withdrawing groups (NO₂, CN, COOH) → meta directors."}
+  ],
+  ["Purification & Analysis of Organic Compounds", 1.94, "low",
+    ["Purification methods: crystallisation, distillation, sublimation, chromatography","Elemental analysis — Dumas, Kjeldahl (for N), Carius (for S/halogen)","Lassaigne's sodium fusion test — detection of N, S, halogens"],
+    {how:"Purely factual. One NCERT reading + 10 PYQs. Don't over-invest.",books:["NCERT XI Ch 12"],yt:["PW — Qualitative Analysis (quick)"],time:"1–2 days",tip:"Lassaigne test: N → blue (Prussian blue), S → black ppt (PbS), halogen → white ppt (AgCl/AgBr/AgI)."}
+  ],
+  ["Hydrogen", 2.82, "mid",
+    ["Position of H in periodic table — reasons","Preparation of H₂ (industrial — steam reforming, electrolysis)","Properties: reducing agent, reacts with metals/non-metals","Water — physical properties, ice structure, hard and soft water","Heavy water D₂O — properties and uses","Hydrogen peroxide H₂O₂ — preparation, structure, oxidizing and reducing agent","Hydrides: ionic, covalent, metallic"],
+    {how:"H₂O₂ as oxidising/reducing agent in different media + hard water removal methods are the most tested facts.",books:["NCERT XI Ch 9"],yt:["PW — Hydrogen JEE"],time:"3 days",tip:"H₂O₂ is oxidising in acidic medium, reducing in basic medium (as compared to stronger oxidants). JEE asks this."}
+  ],
+  ["s-Block Elements", 4.16, "high",
+    ["Group 1 (alkali metals): electronic config, properties, anomalous behavior of Li","Group 2 (alkaline earth metals): Mg, Ca properties","Diagonal relationship: Li–Mg, Be–Al","Compounds of Na: NaOH (Solvay process), Na₂CO₃, NaHCO₃, NaCl","Compounds of Ca: CaO (lime), Ca(OH)₂, CaCO₃, CaSO₄ (plaster of Paris)","Hard water and softening methods","Biological significance of Na, K, Mg, Ca"],
+    {how:"This is almost entirely factual NCERT. Read every table in NCERT Xi Ch 10 carefully. Solvay process steps and uses of each compound are directly asked.",books:["NCERT XI Ch 10"],yt:["PW Prateek Jain — s-Block JEE","AJ Sir — s-Block"],time:"4–5 days",tip:"Plaster of Paris (CaSO₄·½H₂O) vs Gypsum (CaSO₄·2H₂O). On heating gypsum → PoP. On adding water → PoP sets back. JEE loves this."}
+  ],
+  ["Environmental Chemistry", 2.99, "mid",
+    ["Air pollutants: primary and secondary, smog (photochemical and classical)","Greenhouse gases and global warming — CO₂, CH₄, CFCs","Ozone depletion — CFCs mechanism","Water pollutants: BOD, COD, heavy metals","Soil pollution: pesticides, fertilizers","Green chemistry principles"],
+    {how:"Highly factual, mostly NCERT. Focus on: greenhouse gases list, ozone depletion mechanism (CFCs), BOD concept, and photochemical smog components.",books:["NCERT XI Ch 14"],yt:["PW — Environmental Chemistry Quick Revision"],time:"2 days",tip:"Photochemical smog: NO₂ + UV → NO + O; O + O₂ → O₃; forms PAN. Classical smog: SO₂ + fog → H₂SO₄ mist."}
+  ],
+],
+
+/* =================== CHEMISTRY XII =================== */
+chem12: [
+  ["Solutions", 4.54, "high",
+    ["Types of solutions and solubility","Henry's law — gas in liquid","Vapour pressure — Raoult's law for ideal solutions","Non-ideal solutions — positive and negative deviations","Colligative properties: relative lowering of VP, elevation of BP","Depression in freezing point, osmotic pressure","Van't Hoff factor i — electrolytes and association","Osmosis and reverse osmosis"],
+    {how:"Colligative property numericals (ΔTf and π especially) appear in every session. Master the formulas and van't Hoff factor application for electrolytes.",books:["NCERT XII Ch 2","OP Tandon Solutions"],yt:["PW Paaras Thakur — Solutions JEE Full"],time:"6–7 days",tip:"Molal depression constant Kf for water = 1.86 K·kg/mol. Molal elevation Kb for water = 0.52. These are given in most papers but knowing them speeds you up."}
+  ],
+  ["Electrochemistry", 3.30, "mid",
+    ["Electrochemical cells — galvanic vs electrolytic","Standard electrode potentials — SHE as reference","Nernst equation: E = E° − (RT/nF)ln Q","EMF of a cell = E°cathode − E°anode","Faraday's laws of electrolysis","Kohlrausch's law — molar conductance at infinite dilution","Batteries: dry cell, lead storage, fuel cells (H₂-O₂)"],
+    {how:"Nernst equation numericals + Faraday's laws calculations appear most. Learn to use Nernst equation for non-standard conditions.",books:["NCERT XII Ch 3","OP Tandon Electrochemistry"],yt:["PW Paaras Thakur — Electrochemistry JEE"],time:"6–7 days",tip:"ΔG° = −nFE° = −RT ln K. All three quantities connected — switching between them is a very common JEE question."}
+  ],
+  ["Chemical Kinetics", 3.61, "mid",
+    ["Rate of reaction — average and instantaneous","Rate law and rate constant","Order of reaction — 0, 1, 2 — determination methods","Integrated rate equations — concentration vs time for each order","Half-life for each order","Arrhenius equation: k = Ae^(−Ea/RT)","Activation energy — temperature dependence","Molecularity vs order — difference and examples"],
+    {how:"Half-life calculations and Arrhenius equation problems appear in most sessions. First-order kinetics (radioactive decay, hydrolysis) is the most important.",books:["NCERT XII Ch 4","OP Tandon Kinetics"],yt:["PW Paaras Thakur — Chemical Kinetics JEE"],time:"5–6 days",tip:"First order: t½ = 0.693/k (independent of concentration). Zero order: t½ = [A]₀/2k (depends on concentration)."}
+  ],
+  ["Haloalkanes and Haloarenes", 2.65, "mid",
+    ["Preparation of haloalkanes (from alcohols, alkenes, alkanes)","SN1 and SN2 mechanisms — conditions, stereochemistry","E1 and E2 elimination — Zaitsev's rule","Reactivity order: RI > RBr > RCl","Haloarenes — less reactive toward nucleophilic substitution (why)","Uses: DDT, BHC, chloroform, CCl₄","Polyhalogen compounds: CHCl₃, CCl₄, CHI₃ properties"],
+    {how:"SN1 vs SN2 conditions are the core JEE topic here. Learn when each operates: SN2 favors primary substrates, polar aprotic solvents. SN1 favors tertiary, polar protic solvents.",books:["NCERT XII Ch 10","MS Chauhan Haloalkanes"],yt:["PW Prashant Jain — Haloalkanes JEE"],time:"5–6 days",tip:"SN2: backside attack → inversion of configuration (Walden inversion). SN1: racemization (50:50 enantiomers). JEE asks stereochemical outcomes."}
+  ],
+  ["Alcohols, Phenols and Ethers", 3.54, "mid",
+    ["Preparation of alcohols: hydration, hydroboration-oxidation","Reactions of alcohols: with HX (Lucas test), dehydration, oxidation","Acidity of alcohols vs phenols vs H₂O","Preparation of phenols: from chlorobenzene, from cumene","Reactions of phenols: with FeCl₃, with bromine water, nitration, Kolbe's, Reimer-Tiemann","Ether preparation (Williamson synthesis) and reactions"],
+    {how:"Lucas test (ZnCl₂/HCl) for alcohol classification, Kolbe's reaction, and Reimer-Tiemann reaction of phenol appear directly in JEE. Learn mechanisms for these.",books:["NCERT XII Ch 11","MS Chauhan"],yt:["PW Prashant Jain — Alcohols Phenols Ethers JEE"],time:"5–6 days",tip:"Phenol acidity > water > alcohol. Phenol reacts with NaHCO₃? No (too weak). Carboxylic acid? Yes. JEE tests this distinction often."}
+  ],
+  ["Aldehydes, Ketones & Carboxylic Acids", 5.95, "high",
+    ["Preparation of aldehydes: oxidation of primary alcohols, ozonolysis, Gattermann-Koch","Preparation of ketones: oxidation of 2° alcohols, Friedel-Crafts acylation","Nucleophilic addition to C=O: with HCN, NH₂OH, hydrazine, Grignard","Aldol condensation and cross-aldol","Cannizzaro reaction — non-enolizable aldehydes","Clemmensen and Wolff-Kishner reductions","Acidic properties of carboxylic acids — factors affecting","Reactions: with SOCl₂, with PCl₅, anhydride formation, esterification","Hell-Volhard-Zelinsky (HVZ) reaction"],
+    {how:"This is the highest-weightage Chemistry chapter. Do every reaction mechanism. JEE asks name reactions (Aldol, Cannizzaro, HVZ) and conditions directly.",books:["NCERT XII Ch 12","MS Chauhan Aldehydes & Ketones"],yt:["PW Prashant Jain — Carbonyl Compounds JEE Full"],time:"10–12 days",tip:"Cannizzaro reaction: HCHO or no α-H → disproportionation (one molecule oxidised, one reduced). Formaldehyde always gives Cannizzaro."}
+  ],
+  ["Amines", 4.40, "high",
+    ["Classification: 1°, 2°, 3° amines and quaternary ammonium salts","Preparation: reduction of nitro, nitrile, amide; Gabriel phthalimide","Basicity: 2° > 1° > 3° (in water, due to solvation) — vs gas phase order","Reactions: with acids, acylation, alkylation, Hinsberg test","Electrophilic substitution of aromatic amines: activating effect","Diazonium salts: preparation and synthetic uses (Sandmeyer reaction)","Coupling reaction of diazonium with phenol/amine"],
+    {how:"Diazonium salt reactions (Sandmeyer) and basicity comparison are the most tested subtopics. Memorize Sandmeyer products (ArCl, ArBr, ArCN, ArOH).",books:["NCERT XII Ch 13","MS Chauhan Amines"],yt:["PW Prashant Jain — Amines JEE"],time:"6–7 days",tip:"Basicity in water: 2° > 1° > 3° > NH₃ > ArNH₂. In gas phase: 3° > 2° > 1°. JEE always asks 'in aqueous solution' — use the water order."}
+  ],
+  ["Biomolecules", 3.99, "mid",
+    ["Carbohydrates: classification (mono/di/poly), glucose structure (open chain + ring), reducing/non-reducing sugars","Sucrose (non-reducing), starch, cellulose, glycogen — functions","Amino acids: essential vs non-essential, zwitterion","Proteins: primary, secondary, tertiary, quaternary structure; denaturation","Enzymes: mechanism (lock and key), cofactors","Nucleic acids: DNA double helix (Watson-Crick), RNA types","Vitamins and hormones (brief)"],
+    {how:"Mostly factual from NCERT. Focus on: glucose open-chain structure, reducing vs non-reducing sugars, DNA double helix features, enzyme mechanism. These appear directly.",books:["NCERT XII Ch 14"],yt:["PW — Biomolecules Quick JEE Revision"],time:"4–5 days",tip:"Sucrose (cane sugar) = glucose + fructose; non-reducing (no free anomeric OH). Maltose = glucose + glucose; reducing. JEE asks this."}
+  ],
+  ["Coordination Compounds", 5.33, "high",
+    ["Werner's theory — coordination number, ligand, denticity","IUPAC nomenclature of coordination compounds","Types of ligands: monodentate, bidentate, ambidentate, chelating","Isomerism: structural (ionisation, linkage, hydrate) and stereoisomerism (geometric, optical)","Crystal Field Theory (CFT): splitting of d-orbitals in octahedral/tetrahedral fields","High spin vs low spin complexes — CFSE calculation","Spectrochemical series of ligands","Stability of complexes — chelate effect","Organometallic compounds: EAN rule","Industrial applications: extraction of metals, catalysis"],
+    {how:"IUPAC naming + isomerism types + CFT splitting diagrams are the three core JEE areas. Do 20+ naming problems until it's automatic.",books:["NCERT XII Ch 9","JD Lee Coordination"],yt:["PW Prateek Jain — Coordination Compounds JEE Full","AJ Sir — Coordination JEE"],time:"8–10 days",tip:"Spectrochemical series (strong to weak field): CO > CN⁻ > NO₂⁻ > EDTA > NH₃ > py > H₂O > F⁻ > Cl⁻ > Br⁻ > I⁻. Strong field = low spin = more splitting."}
+  ],
+  ["p-Block Elements (Group 15–18)", 3.68, "mid",
+    ["Group 15 (N, P): oxides of N (N₂O to N₂O₅), phosphine, PCl₃ vs PCl₅, oxoacids of P","Group 16 (O, S): ozone structure and properties, H₂SO₄ preparation (contact process), oxoacids of S","Group 17 (halogens): trends, HX preparation, interhalogen compounds, bleaching powder","Group 18 (noble gases): properties, uses, clathrate compounds"],
+    {how:"The most fact-heavy chapter in Inorganic. NCERT is sufficient but must be read very carefully. Oxoacids of P and S, contact process steps, and interhalogen compounds appear directly.",books:["NCERT XII Ch 7"],yt:["PW Prateek Jain — p-Block XII JEE Full","AJ Sir — p-Block"],time:"8–9 days",tip:"Oxoacids of P: increasing oxidation state +1,+3,+4,+5 → H₃PO₂, H₃PO₃, H₄P₂O₆, H₃PO₄. Number of P-OH bonds = basicity."}
+  ],
+  ["d and f-Block Elements", 4.69, "high",
+    ["General characteristics of d-block: variable oxidation states, colored ions, magnetic properties, catalytic activity","Preparation and properties: KMnO₄ (how it acts as oxidant in acidic/basic/neutral medium), K₂Cr₂O₇","Important reactions: Cr₂O₇²⁻ and MnO₄⁻ in oxidation reactions","Lanthanoids: electronic config, lanthanoid contraction, oxidation states","Actinoids: brief comparison with lanthanoids","Inner transition elements — why 4f vs 5f"],
+    {how:"KMnO₄ reactions in different media (acidic→Mn²⁺, neutral→MnO₂, basic→MnO₄²⁻) appear in almost every session. Memorize these.",books:["NCERT XII Ch 8"],yt:["PW Prateek Jain — d&f Block JEE","AJ Sir — d-Block"],time:"5–6 days",tip:"Lanthanoid contraction: atomic/ionic radius decreases across lanthanoids because 4f electrons shield poorly. Explains why Zr≈Hf in size (important fact)."}
+  ],
+  ["Salt Analysis (Qualitative)", 0.50, "low",
+    ["Anion tests: CO₃²⁻, SO₄²⁻, Cl⁻, Br⁻, I⁻, NO₃⁻","Cation tests: Group I–VI in systematic analysis","Flame tests: Li (crimson), Na (yellow), K (lilac), Ba (apple green), Cu (blue-green)"],
+    {how:"One NCERT reading and 5 PYQs. Very low yield per hour invested.",books:["NCERT XII Ch 11 (practical)"],yt:["PW — Salt Analysis Quick"],time:"1 day",tip:"Flame test colours for the 5 common metals. Direct MCQ every 3–4 sessions."}
+  ],
+  ["The Solid State", 1.72, "low",
+    ["Crystal systems — types and properties","Unit cell: primitive, BCC, FCC — number of atoms per unit cell","Coordination number in different packing","Radius ratio and structure (NaCl, ZnS, CsCl, diamond)","Point defects: Schottky, Frenkel, impurity, metal excess/deficiency","Electrical properties of solids — band theory basics"],
+    {how:"Formula for density using unit cell (d = ZM/Naᵃ³) is directly asked. Schottky vs Frenkel defect properties appear as MCQs.",books:["NCERT XII Ch 1"],yt:["PW Paaras Thakur — Solid State JEE"],time:"4 days",tip:"FCC/CCP: CN = 12, Z = 4. BCC: CN = 8, Z = 2. Simple cubic: CN = 6, Z = 1. Memorize these."}
+  ],
+  ["Surface Chemistry", 2.99, "low",
+    ["Adsorption: physisorption vs chemisorption — differences","Freundlich and Langmuir adsorption isotherms","Colloids: types, preparation, properties (Tyndall effect, Brownian motion)","Emulsions and gels","Catalysis: homogeneous, heterogeneous; shape selectivity","Enzyme catalysis — characteristics"],
+    {how:"Mostly factual/conceptual. Physi vs chemisorption comparison table, Tyndall effect, and types of colloids are the most tested.",books:["NCERT XII Ch 5"],yt:["PW — Surface Chemistry Quick JEE"],time:"3–4 days",tip:"Physi: reversible, low activation energy, multilayer, exothermic. Chemi: irreversible, high Ea, monolayer, also exothermic but more so."}
+  ],
+  ["Isolation of Metals (Metallurgy)", 3.37, "mid",
+    ["Concentration of ores: gravity, magnetic, froth flotation, leaching","Extraction: pyrometallurgy, hydrometallurgy, electrometallurgy","Reduction: oxide ores (C), sulphide ores (roasting then C), Au/Ag (cyanide)","Refining: distillation, liquation, electrolytic, zone, vapour phase","Thermodynamics of metallurgy: Ellingham diagram"],
+    {how:"Ellingham diagram and cyanide process (gold extraction) appear frequently. Know which metal uses which extraction method.",books:["NCERT XII Ch 6"],yt:["PW Prateek Jain — Metallurgy JEE"],time:"4–5 days",tip:"Gold extraction: 4Au + 8NaCN + 2H₂O + O₂ → 4Na[Au(CN)₂] + 4NaOH. Then recovered by Zn."}
+  ],
+  ["Polymers", 2.06, "low",
+    ["Classification: natural/synthetic, addition/condensation","Addition polymers: polyethylene, PVC, teflon, natural rubber","Condensation polymers: nylon-6,6, terylene, bakelite","Biodegradable polymers: PHBV, nylon-2-nylon-6","Copolymers: Buna-S, Buna-N","Vulcanisation of rubber"],
+    {how:"Mostly factual — monomers of common polymers (nylon-6,6 from hexamethylenediamine + adipic acid) are directly asked.",books:["NCERT XII Ch 15"],yt:["PW — Polymers Quick Revision JEE"],time:"2 days",tip:"Nylon-6,6: hexa + adip. Nylon-6: caprolactam. Terylene: ethylene glycol + terephthalic acid. Know all three."}
+  ],
+  ["Chemistry in Everyday Life", 2.20, "low",
+    ["Drugs: analgesics, antibiotics (bactericidal vs bacteriostatic), antiseptics, antacids, antihistamines","Drug-enzyme and drug-receptor interactions","Food additives: preservatives, artificial sweeteners","Soaps and detergents: cleansing action, HLB value","Rocket propellants basics"],
+    {how:"Factual NCERT chapter. List of example drugs for each category is directly asked as MCQ.",books:["NCERT XII Ch 16"],yt:["PW — Chemistry in Everyday Life [legacy/removed] Quick"],time:"2 days",tip:"Antibiotics: bactericidal (kill bacteria) vs bacteriostatic (inhibit growth). Sulphonamides are bacteriostatic. Penicillin is bactericidal. JEE asks this."}
+  ],
+],
+
+/* =================== MATHS XI =================== */
+math11: [
+  ["Basic Mathematics & Logarithm", 0.59, "low",
+    ["Logarithm rules: log(ab), log(a/b), log(aⁿ)","Change of base formula","Natural vs common logarithm","Modulus and greatest integer function basics"],
+    {how:"Foundation chapter. 1–2 hours maximum. Logarithm rules are used constantly in calculus and other chapters.",books:["RD Sharma XI"],yt:["Mathongo — Logarithm Basic JEE"],time:"1–2 days",tip:"log_b(x) = ln(x)/ln(b). Change of base is used in every other application — know it cold."}
+  ],
+  ["Sets", 1.00, "low",
+    ["Set notation and types (null, universal, finite, infinite)","Subsets, power sets","Union, intersection, complement, difference","Venn diagram problems","De Morgan's laws","Cartesian product"],
+    {how:"Direct formula questions. Learn De Morgan's laws and Venn diagram counting formula: |A∪B| = |A| + |B| − |A∩B|.",books:["NCERT XI Ch 1","RD Sharma"],yt:["Vedantu — Sets JEE Quick"],time:"2 days",tip:"|A∪B∪C| = |A| + |B| + |C| − |A∩B| − |B∩C| − |A∩C| + |A∩B∩C|. Direct MCQ formula."}
+  ],
+  ["Trigonometric Ratios & Identities", 1.02, "low",
+    ["All 6 trig ratios and their reciprocals","Pythagorean identities: sin²+cos²=1, etc.","Sum and difference formulas: sin(A±B), cos(A±B), tan(A±B)","Double angle: sin2A, cos2A, tan2A","Triple angle formulas","Product-to-sum and sum-to-product formulas","Values at 0°,30°,45°,60°,90°,120°,150°,180°"],
+    {how:"This is the foundation for all trigonometry. Memorize compound angle formulas — they appear in all subsequent trig chapters and in calculus.",books:["NCERT XI Ch 3","Cengage Trig"],yt:["Mohit Tyagi — Trig Identities"],time:"3–4 days",tip:"cos2A = 1−2sin²A = 2cos²A−1 = cos²A−sin²A. All three forms used in integration — memorize all three."}
+  ],
+  ["Trigonometric Equations", 1.35, "low",
+    ["General solution of sinθ=k, cosθ=k, tanθ=k","Equations reducible to quadratic in trig functions","Simultaneous trigonometric equations","Principal value range for inverse trig"],
+    {how:"General solution formulas are directly asked. Learn all three (sin, cos, tan general solutions) precisely.",books:["NCERT XI Ch 3","Cengage Trig Eq."],yt:["PW — Trig Equations JEE"],time:"2–3 days",tip:"General solution: sinθ=sinα → θ=nπ+(−1)ⁿα. cosθ=cosα → θ=2nπ±α. tanθ=tanα → θ=nπ+α."}
+  ],
+  ["Quadratic Equations", 3.30, "mid",
+    ["Roots: formula, discriminant analysis","Sum and product of roots (Vieta's formulas)","Nature of roots: real, complex, equal","Equations with given roots","Inequalities involving quadratic expressions","Location of roots relative to a value","Common roots condition","Descartes' rule of signs"],
+    {how:"Location of roots problems are the JEE-favourite from this chapter. Sign analysis + discriminant + Vieta's formulas are all tested.",books:["Cengage Algebra — Quadratics","Arihant Quadratic Eq."],yt:["Mathongo — Quadratic Equations JEE"],time:"5–6 days",tip:"For ax²+bx+c=0: both roots > k requires D≥0, f(k)·a>0, and −b/2a > k (vertex). All three conditions needed."}
+  ],
+  ["Complex Numbers", 4.75, "high",
+    ["Representation: a+bi, polar form r(cosθ+isinθ), Euler form re^(iθ)","Modulus and argument","Algebraic operations and their properties","Conjugate: properties and use in division","De Moivre's theorem and applications","nth roots of unity — sum and product","Argand plane: geometry of complex numbers","Rotation of complex numbers in Argand plane"],
+    {how:"Rotation formula (multiplication by e^(iθ) = cosθ+isinθ) and roots of unity are the JEE-specific topics most students miss. Spend extra time here.",books:["Cengage Complex Numbers","Arihant Algebra"],yt:["Mathongo — Complex Numbers JEE Full","Mohit Tyagi — Complex Numbers"],time:"7–8 days",tip:"Rotation: to rotate z by angle θ anticlockwise about origin: multiply by e^(iθ). Very useful in geometry problems."}
+  ],
+  ["Sequences and Series", 5.74, "high",
+    ["AP: nth term, sum of n terms, AM properties","GP: nth term, sum of n terms (finite and infinite), GM properties","AM-GM-HM inequality — when equality holds","Arithmetic-geometric progression (AGP)","Special sums: Σn, Σn², Σn³","Method of differences for general term","Telescoping series"],
+    {how:"This is the second highest-weightage Maths chapter in XI. AGP and method of differences problems are the JEE-specific hard type — spend time on these.",books:["Cengage Algebra — Sequences","Arihant Sequences"],yt:["Mathongo — Sequences & Series JEE","Mohit Tyagi — AGP"],time:"7–8 days",tip:"Sum of infinite GP = a/(1−r) for |r|<1. AGP sum requires differentiation method — don't memorize, derive it each time."}
+  ],
+  ["Binomial Theorem", 5.05, "high",
+    ["Binomial theorem for positive integer n","General term T_{r+1} = nCr · aⁿ⁻ʳ · bʳ","Middle term — for even/odd n","Greatest term in binomial expansion","Binomial coefficients: properties, sum, alternating sum","Multinomial expansion basics","Finding coefficient of specific terms","Applications to approximation (first two terms)"],
+    {how:"General term + finding specific coefficients is the highest-frequency question type. Master T_{r+1} formula and set up the condition to find r.",books:["Cengage Binomial","Arihant Algebra"],yt:["Mathongo — Binomial Theorem JEE"],time:"5–6 days",tip:"For coefficient of xⁿ in (1+x)^p(1+x)^q type: write combined expansion, equate power of x to n."}
+  ],
+  ["Permutations & Combinations", 3.60, "mid",
+    ["Fundamental principle of counting","Permutations: nPr with and without repetition","Combinations: nCr properties and identities","Circular permutations","Arrangements with restrictions (identical elements, fixed positions)","Distribution problems","Derangements"],
+    {how:"JEE loves arrangement-with-restriction problems and distribution problems. Set up the cases systematically — don't try to solve everything with one formula.",books:["Cengage P&C","Arihant P&C"],yt:["Mathongo — P&C JEE"],time:"5–6 days",tip:"'At least one' problems: total − none. Complement method is faster 90% of the time."}
+  ],
+  ["Straight Lines", 2.71, "mid",
+    ["Slope, intercepts, angle between lines","All forms: slope-intercept, two-point, intercept, normal","Distance from a point to a line","Distance between parallel lines","Angle bisectors of two lines","Family of lines through intersection (λ-method)","Reflection of a point across a line","Foot of perpendicular from a point to a line"],
+    {how:"Distance formula and family of lines (λ-method) are the most tested. Learn to write equation of any line through intersection of two given lines using S₁+λS₂=0.",books:["Cengage Coordinate Geometry — Straight Lines","Arihant CG"],yt:["NJ Sir — Straight Lines JEE"],time:"5–6 days",tip:"Family of lines through intersection of L₁=0 and L₂=0: L₁+λL₂=0. Use given condition to find λ — fastest way to handle these problems."}
+  ],
+  ["Circles", 3.24, "mid",
+    ["Standard equation and general equation of circle","Centre and radius from general form","Circle through 3 points","Tangent to a circle: from external point, condition for tangency","Chord of contact — equation","Power of a point","Common tangents to two circles","Radical axis and coaxial circles","Family of circles"],
+    {how:"Tangent, chord of contact, and radical axis problems dominate JEE. Chord of contact equation T=0 is a very efficient tool — learn it.",books:["Cengage CG — Circles"],yt:["NJ Sir — Circles JEE Full"],time:"6–7 days",tip:"Equation of chord of contact from external point (h,k): hx + ky = a² (for x²+y²=a²). Very frequently used."}
+  ],
+  ["Parabola", 2.44, "mid",
+    ["Standard parabolas: y²=4ax (focus, directrix, latus rectum)","Other orientations: y²=−4ax, x²=4ay, x²=−4ay","Vertex, focus, directrix, axis for general parabola","Tangent to parabola — conditions, point of contact","Normal to parabola","Chord of contact, chord with given midpoint","Focal chord properties"],
+    {how:"Tangent and normal to parabola appear in almost every session. Learn parametric form: point = (at², 2at). Tangent at t: ty = x + at².",books:["Cengage CG — Parabola","Arihant CG"],yt:["NJ Sir — Parabola JEE"],time:"5–6 days",tip:"Parabola: for y²=4ax, parametric point is (at²,2at). Tangent at parameter t: ty = x + at². Normal: y + tx = 2at + at³."}
+  ],
+  ["Ellipse", 2.11, "low",
+    ["Standard equation x²/a²+y²/b²=1, a>b","Eccentricity, foci, directrices, latus rectum","Tangent and normal to ellipse","Focal chord and focal radii","Auxiliary circle and eccentric angle"],
+    {how:"JEE Main rarely goes very deep here — tangent equation and eccentricity are the main topics. 3–4 days is sufficient.",books:["Cengage CG — Ellipse"],yt:["NJ Sir — Ellipse JEE"],time:"3–4 days",tip:"For x²/a²+y²/b²=1: b²=a²(1−e²). Sum of focal distances = 2a (constant). Very direct questions."}
+  ],
+  ["Hyperbola", 1.65, "low",
+    ["Standard hyperbola x²/a²−y²/b²=1","Asymptotes — equation and angle between","Rectangular hyperbola xy=c²","Tangent and normal","Conjugate hyperbola"],
+    {how:"Low weightage — quick coverage after ellipse. Asymptotes and rectangular hyperbola are the most asked.",books:["Cengage CG — Hyperbola"],yt:["NJ Sir — Hyperbola JEE (quick)"],time:"2–3 days",tip:"Hyperbola asymptotes: y = ±(b/a)x. Rectangular hyperbola: a=b, asymptotes perpendicular."}
+  ],
+  ["Statistics", 3.00, "mid",
+    ["Mean, weighted mean, AM of grouped data","Median and mode of grouped data","Range, mean deviation from mean/median","Variance and standard deviation — formula and calculation","Coefficient of variation","Comparison of two data sets using CV"],
+    {how:"Variance and standard deviation calculation problems appear most frequently. Learn the shortcut formula: Var = (Σx²/n) − (x̄)².",books:["NCERT XI Ch 15","Cengage Statistics"],yt:["Vedantu — Statistics JEE Quick"],time:"3 days",tip:"Standard deviation formula shortcut: σ = √(mean of squares − square of mean). Faster than the definition formula."}
+  ],
+  ["Properties of a Triangle", 0.36, "low",
+    ["Sine rule: a/sinA = b/sinB = c/sinC","Cosine rule: a² = b²+c²−2bc·cosA","Projection formula","Area of triangle: ½absinC, Hero's formula","Radius of incircle r, circumradius R","Medians, altitudes, angle bisectors — lengths","Napier's analogy"],
+    {how:"Very low weightage. Cover in 2 days using NCERT + 10 PYQs. Focus only on sine/cosine rule and R, r formulas.",books:["NCERT XI Ch 3 (additional topics)","Cengage Trig"],yt:["Vedantu — Properties of Triangle (short)"],time:"2 days",tip:"R = a/(2sinA) = abc/(4Δ). r = Δ/s where s = semiperimeter."}
+  ],
+],
+
+/* =================== MATHS XII =================== */
+math12: [
+  ["Determinants", 4.00, "high",
+    ["Calculation of 2×2 and 3×3 determinants","Properties of determinants (row/column operations)","Minor, cofactor, cofactor expansion","Singular matrix (det=0) — conditions","Area of triangle using determinant","Solving linear equations: Cramer's rule","Adjoint and inverse using cofactors"],
+    {how:"Properties of determinants (used to simplify before evaluation) and Cramer's rule are the JEE-focused areas. Practice 15+ problems using properties.",books:["Cengage Algebra — Determinants","NCERT XII Ch 4"],yt:["Mathongo — Determinants JEE Full"],time:"5–6 days",tip:"If two rows/columns are identical → det = 0. If a row is multiplied by k → det multiplied by k. Use properties to reduce to triangular form."}
+  ],
+  ["Matrices", 3.46, "mid",
+    ["Types: row, column, square, identity, diagonal, symmetric, skew-symmetric","Matrix operations: addition, scalar multiplication, multiplication","Transpose: (AB)ᵀ=BᵀAᵀ, symmetric and skew-symmetric split","Inverse: conditions, using adjoint: A⁻¹=adj(A)/det(A)","Elementary row operations","System of linear equations — matrix method","Cayley-Hamilton theorem (basic application)"],
+    {how:"Matrix multiplication and solving equations using inverse method are the key JEE topics. Also: properties of transpose/symmetric/skew-symmetric matrices.",books:["Cengage Algebra — Matrices","NCERT XII Ch 3"],yt:["Mathongo — Matrices JEE"],time:"4–5 days",tip:"A matrix A is invertible iff det(A) ≠ 0. For 2×2: A⁻¹ = (1/det) × [[d,−b],[−c,a]]. Memorize this."}
+  ],
+  ["Relations and Functions", 1.25, "low",
+    ["Types of relations: reflexive, symmetric, transitive, equivalence","Types of functions: injective, surjective, bijective","Composition of functions","Inverse functions — conditions for existence","Binary operations — properties"],
+    {how:"Equivalence relation checking and bijection questions are the common JEE types. 2–3 days is enough.",books:["NCERT XII Ch 1"],yt:["Vedantu — Relations Functions JEE Quick"],time:"2–3 days",tip:"Equivalence = reflexive + symmetric + transitive. Check all three conditions systematically."}
+  ],
+  ["Inverse Trigonometric Functions", 1.59, "low",
+    ["Domain and range (principal value branch) for all 6 inverse trig functions","Properties: sin⁻¹(sinx), sin(sin⁻¹x)","Identities: sin⁻¹x+cos⁻¹x = π/2, tan⁻¹x+cot⁻¹x = π/2","Sum/difference formulas for tan⁻¹","Conversion between inverse trig functions","Equations involving inverse trig"],
+    {how:"Domain/range and sum formulas are directly asked. Know tan⁻¹x + tan⁻¹y formulas for all three cases (xy<1, xy>1, xy<1 but x<0).",books:["NCERT XII Ch 2","Cengage ITF"],yt:["Mohit Tyagi — Inverse Trig JEE"],time:"3–4 days",tip:"tan⁻¹x + tan⁻¹y = tan⁻¹((x+y)/(1−xy)) if xy < 1. If xy > 1 and x > 0: π + tan⁻¹(...). Add π/2 only when needed."}
+  ],
+  ["Limit, Continuity & Differentiability", 5.50, "high",
+    ["Limit evaluation: factoring, rationalizing, L'Hôpital's rule","Standard limits: sinx/x → 1, (1+1/n)ⁿ → e, (eˣ−1)/x → 1","Continuity: definition, types of discontinuity","Differentiability: existence conditions, relationship with continuity","Differentiability at sharp corners, jump discontinuities","Sandwich theorem applications","Limits at infinity"],
+    {how:"L'Hôpital's rule and 0/0 or ∞/∞ form problems dominate JEE. Standard limits must be memorized — they appear as direct substitutions.",books:["Cengage Calculus — Limits","Arihant Limits"],yt:["Mathongo — Limits JEE Full","Mohit Tyagi — Continuity & Differentiability"],time:"7–8 days",tip:"L'Hôpital: only for 0/0 or ∞/∞ forms. Don't apply blindly — check the indeterminate form first."}
+  ],
+  ["Methods of Differentiation", 1.24, "low",
+    ["Basic differentiation formulas — all standard functions","Chain rule, product rule, quotient rule","Implicit differentiation","Logarithmic differentiation — useful for products/powers","Differentiation of parametric functions","Successive differentiation — nth derivative","Leibniz theorem"],
+    {how:"This is a tool chapter used everywhere. Master chain rule + implicit differentiation — both appear constantly in Application of Derivatives.",books:["NCERT XII Ch 5","Cengage Calculus"],yt:["Mathongo — Differentiation Methods"],time:"3–4 days",tip:"Logarithmic differentiation: take log both sides when function has variable in both base and exponent (e.g. y=xˣ)."}
+  ],
+  ["Application of Derivatives", 4.75, "high",
+    ["Rate of change — dy/dt via chain rule","Tangent and normal to a curve: slope = dy/dx","Increasing and decreasing functions — using f'(x)","Critical points — f'(x) = 0 or undefined","Maxima and minima — first and second derivative tests","Rolle's theorem and LMVT — conditions and applications","Curve sketching using derivatives","Optimization problems — word problems"],
+    {how:"Optimization word problems and maxima/minima are the JEE workhorses. Also: tangent/normal questions. Do at least 20 optimization problems of increasing difficulty.",books:["Cengage Calculus — AOD","Arihant AOD"],yt:["Mathongo — Application of Derivatives JEE","Mohit Tyagi — Maxima Minima"],time:"7–8 days",tip:"For optimization: identify the quantity to minimize/maximize, write it as a function of one variable, differentiate, set equal to 0, verify with second derivative."}
+  ],
+  ["Indefinite Integration", 1.65, "low",
+    ["Standard integral formulas — all 20+ to memorize","Integration by substitution","Integration by parts (ILATE rule)","Partial fractions — types and cases","Special integrals: ∫dx/(a²−x²), ∫dx/√(a²−x²)","Integration of rational functions"],
+    {how:"Indefinite integration is a technical skill — practice 30+ integrals of increasing type. Most JEE Main indefinite integration questions are direct formula application or substitution.",books:["Cengage Integration","Arihant Integration"],yt:["Mathongo — Integration Methods JEE","Mohit Tyagi — Integration by Parts"],time:"5–6 days",tip:"Integration by parts: ∫uv dx = u∫v dx − ∫(u'∫v dx)dx. ILATE order: Inverse trig, Log, Algebraic, Trig, Exponential."}
+  ],
+  ["Definite Integration", 5.08, "high",
+    ["Definite integral as limit of a sum","Properties: limits interchange, splitting, symmetry","King's property: ∫f(x)dx = ∫f(a+b−x)dx","Reduction formulas for ∫sinⁿx, ∫cosⁿx","Leibniz integral rule (differentiation under integral sign)","Integral as area — signed area concept","Walli's formula"],
+    {how:"King's property is used in ~50% of JEE definite integration problems — master it first. Then reduction formulas. Do 25+ past paper problems.",books:["Cengage Integration — Definite","Arihant Definite Integration"],yt:["Mathongo — Definite Integration JEE Full","Mohit Tyagi — Definite Integration"],time:"7–8 days",tip:"King's property: ∫[a,b] f(x)dx = ∫[a,b] f(a+b−x)dx. Adding the two forms often gives 2I = something simple → solve for I."}
+  ],
+  ["Application of Integrals", 2.97, "mid",
+    ["Area under a curve (between curve and x-axis)","Area between two curves","Area using horizontal strip method","Symmetric areas — simplification","Area enclosed by parametric curves"],
+    {how:"Draw the region carefully before integrating. Most errors come from wrong limits or incorrect setup. Practice 15+ area problems.",books:["Cengage — Application of Integrals"],yt:["Mathongo — Area Under Curves JEE"],time:"4–5 days",tip:"Always sketch the curve. Identify whether to integrate w.r.t. x or y based on which gives a simpler setup."}
+  ],
+  ["Differential Equations", 4.16, "mid",
+    ["Order and degree of a DE","Formation of DE from given solution","Variable separable method","Homogeneous differential equations — substitution y=vx","Linear DE: dy/dx + Py = Q → integrating factor e^(∫P dx)","Applications: growth/decay, orthogonal trajectories"],
+    {how:"Linear DE with integrating factor and variable separable are the two most asked types in JEE. Homogeneous DE needs practice on identifying when to use y=vx.",books:["Cengage Calculus — Differential Equations","NCERT XII Ch 9"],yt:["Mathongo — Differential Equations JEE"],time:"5–6 days",tip:"Linear DE IF = e^(∫Pdx). Then solution: y × IF = ∫(Q × IF)dx + C. Always clean."}
+  ],
+  ["Vector Algebra", 4.69, "high",
+    ["Types of vectors: unit, position, collinear, coplanar","Vector addition, subtraction, scalar multiplication","Dot product (scalar product): a⃗·b⃗ = |a||b|cosθ","Cross product (vector product): magnitude = |a||b|sinθ, direction by right-hand rule","Scalar triple product: [a⃗ b⃗ c⃗] = a⃗·(b⃗×c⃗) — coplanarity condition","Vector triple product: a⃗×(b⃗×c⃗)","Section formula in vector form","Projection of one vector on another","Area of triangle/parallelogram using cross product"],
+    {how:"Dot product and cross product applications dominate JEE. Scalar triple product = 0 ↔ coplanar vectors is directly asked. Master all formulas before moving to 3D Geometry.",books:["Cengage Algebra — Vectors","Arihant Vectors"],yt:["Mathongo — Vectors JEE Full","NJ Sir — Vectors"],time:"6–7 days",tip:"Cross product gives a vector perpendicular to both a and b. |a×b| = |a||b|sinθ = area of parallelogram formed. Very frequent JEE use."}
+  ],
+  ["Three-Dimensional Geometry", 7.35, "high",
+    ["Direction cosines and direction ratios — relationship","Equation of a line in 3D: vector form and Cartesian form","Angle between two lines in 3D","Distance of a point from a line","Skew lines — shortest distance formula","Equation of a plane: vector and Cartesian form","Plane through 3 points, plane through intersection of two planes","Angle between line and plane; between two planes","Distance of a point from a plane","Image/reflection of a point in a plane"],
+    {how:"3D Geometry is the single highest-weightage Maths chapter in JEE Main. Distance of point from plane and shortest distance between skew lines appear in nearly every session. Master these two.",books:["Cengage 3D Geometry","Arihant 3D"],yt:["Mathongo — 3D Geometry JEE Full","NJ Sir — 3D Geometry"],time:"9–10 days",tip:"Distance from point (x₁,y₁,z₁) to plane ax+by+cz+d=0: |ax₁+by₁+cz₁+d|/√(a²+b²+c²). The most frequently used formula in this chapter."}
+  ],
+  ["Probability", 3.09, "mid",
+    ["Classical probability — equally likely outcomes","Addition theorem: P(A∪B) = P(A)+P(B)−P(A∩B)","Conditional probability: P(A|B) = P(A∩B)/P(B)","Multiplication theorem and independence","Bayes' theorem — posterior probability","Binomial distribution: P(X=r) = nCr·pʳ·(1−p)^(n−r)","Mean and variance of binomial distribution"],
+    {how:"Bayes' theorem problems and binomial distribution are the JEE-specific advanced types. Basic conditional probability and independence questions are simpler but appear more often.",books:["Cengage Probability","Arihant Probability"],yt:["Mathongo — Probability JEE","Mohit Tyagi — Bayes Theorem"],time:"5–6 days",tip:"Bayes: P(Bᵢ|A) = P(Bᵢ)·P(A|Bᵢ) / ΣP(Bⱼ)·P(A|Bⱼ). Draw a tree diagram — it makes Bayes problems visual and manageable."}
+  ],
+],
+};
+
+/* ============ PHASE DATA — Aug 1 start ============ */
+const phaseData = [
+  {
+    id:"p1", name:"Phase 1 — Demolish Class 11 HIGH-Tier Backlog", dates:"Aug 1 – Sep 7 (5 weeks)",
+    target:"All HIGH-tier Class 11 chapters in Physics, Chemistry, Maths — done, practiced, PYQs attempted.",
+    tasks:[
+      "PHYSICS: Gravitation (5 days) — HC Verma + 15 PYQs",
+      "PHYSICS: Rotational Motion (9 days) — HC Verma + DC Pandey + 20 PYQs",
+      "PHYSICS: Units & Measurements (4 days) — HC Verma + 10 PYQs",
+      "CHEMISTRY: Equilibrium (8 days) — NCERT + OP Tandon + 20 PYQs",
+      "CHEMISTRY: Classification/periodicity + p-Block priority topics (4–5 days) — NCERT + PYQs",
+      "MATHS: Sequences & Series (7 days) — Cengage + 15 PYQs",
+      "MATHS: Binomial Theorem (5 days) — Cengage + 15 PYQs",
+      "MATHS: Complex Numbers (7 days) — Cengage + 15 PYQs",
+      "End of Phase 1: Take 1 full diagnostic mock. Log your score.",
+    ]
+  },
+  {
+    id:"p2", name:"Phase 2 — Class 11 MID-Tier + Class 12 Begins", dates:"Sep 8 – Oct 12 (5 weeks)",
+    target:"All Class 11 MID-tier chapters finished. Class 12 live chapters in sync with school.",
+    tasks:[
+      "PHYSICS: SHM, Thermodynamics, Fluids, Kinetic Theory (4 chapters, 4–5 days each)",
+      "PHYSICS: Motion in Plane, Newton's Laws, Work-Energy (3 chapters, 3–4 days each)",
+      "CHEMISTRY: Chemical Bonding, Atomic Structure, Thermodynamics (Chem), Hydrocarbons",
+      "CHEMISTRY: GOC (full 3 subtopics) — don't rush, this unlocks all future Organic",
+      "MATHS: Quadratic Equations, P&C, Circles, Straight Lines, Statistics",
+      "CLASS 12 (school-sync): Whatever your school is teaching — do it with full attention",
+      "Weekly: 1 timed 25-question subject test on the week's chapters",
+      "Start full mock every 2 weeks by Sept 22 onwards",
+    ]
+  },
+  {
+    id:"p3", name:"Phase 3 — Full Class 12 + Mock Ramp-up", dates:"Oct 13 – Nov 16 (5 weeks)",
+    target:"All Class 12 HIGH and MID tier chapters done. Full 3-hour mocks weekly.",
+    tasks:[
+      "PHYSICS: Current Electricity (8–10 days, high-priority chapter)",
+      "PHYSICS: Ray Optics (8 days), Semiconductor Electronics (6 days), Dual Nature (4 days)",
+      "PHYSICS: Electrostatic Potential & Capacitance (7 days), Alternating Current (6 days)",
+      "CHEMISTRY: Aldehydes/Ketones/Carboxylic Acids (10 days), Amines (6 days), Coordination (9 days)",
+      "CHEMISTRY: Solutions (6 days), d&f Block (5 days), Biomolecules (4 days), Kinetics (5 days)",
+      "MATHS: 3D Geometry (9 days), Limits/Continuity (7 days), Definite Integration (7 days)",
+      "MATHS: Application of Derivatives (7 days), Vector Algebra (6 days), Determinants (5 days)",
+      "Full 3-hour mocks: every Sunday from Oct 13. Review same day.",
+    ]
+  },
+  {
+    id:"p4", name:"Phase 4 — Syllabus Completion + Intensive Mocks", dates:"Nov 17 – Dec 14 (4 weeks)",
+    target:"Full syllabus done. 2–3 mocks/week. Error log reviewed before every mock.",
+    tasks:[
+      "MATHS: Differential Equations, Probability, Application of Integrals, Matrices",
+      "CHEMISTRY: Electrochemistry, p-Block, Haloalkanes, Alcohols/Phenols + remaining active chapters",
+      "PHYSICS: All remaining chapters + 20-question speed drills on HIGH-tier topics",
+      "Mocks: 2–3 per week minimum under strict 3-hour conditions, no exceptions",
+      "Mock review: every single wrong answer diagnosed and entered in Error Log",
+      "Re-attack top 5 chapters from Error Log with a dedicated 2-day revision each",
+    ]
+  },
+  {
+    id:"p5", name:"Phase 5 — Revision Only", dates:"Dec 15 – Jan 5",
+    target:"No new topics at all. Pure mock practice + formula revision.",
+    tasks:[
+      "Daily: 20-min formula sheet rotation — each subject on alternating days",
+      "Re-solve 2021, 2022, 2023, 2024, 2025 January-session JEE Main papers — all shifts",
+      "Continue 2–3 mocks/week, now focusing on time management (Chemistry in 40 min?)",
+      "Error log: review all previous entries before each mock",
+      "Identify your 3 weakest subtopics per subject and drill those specifically",
+    ]
+  },
+  {
+    id:"p6", name:"Phase 6 — Final Taper", dates:"Jan 6 – Exam Day",
+    target:"Calm, confident, rested. No new problems. Full sleep every night.",
+    tasks:[
+      "Only formula sheet + quick NCERT scan — no new problems",
+      "No mocks in the final 3 days before exam",
+      "Sleep 7.5+ hours every night this entire week — non-negotiable",
+      "Shift sleep schedule to match exam-day timing by day 3 before exam",
+      "Read error log once more — 30 min max",
+      "Light physical activity (walk/stretch) daily to keep mind fresh",
+    ]
+  },
+];
+
+const examHallTasks = [
+  "First pass: solve only instantly recognisable questions across all 3 subjects",
+  "Numerical questions are compulsory in the current pattern, but they also carry negative marking — attempt only when you can justify the answer",
+  "For MCQs: only guess if you've eliminated at least 2 of 4 options (−1 penalty hurts)",
+  "Don't spend more than 3–4 minutes on any single question — mark and move on",
+  "Save 5–10 minutes at the end for numerical rechecking",
+  "Chemistry first (fastest) → Physics → Maths (longest) if struggling with time",
+];
+const negMarkTasks = [
+  "Never attempt an MCQ you know nothing about — 3 wrong = −3, wiping a correct answer",
+  "If you're 50-50 on a MCQ: skip, not guess. Come back with fresh eyes if time allows",
+  "Use a confidence threshold: attempt when your working gives you a defensible answer, not simply because a question is numerical",
+  "Numerical answers also carry negative marking under the current 2026 pattern; do not treat them as zero-risk guesses",
+];
+const finalMonthTasks = [
+  "7+ hours sleep every night from December 1 onward — brain consolidates during sleep",
+  "Compare only to your own mock score trend, not others' scores",
+  "Bad mock score = useful data. Spend 2 hours diagnosing it, 0 minutes feeling bad about it",
+  "Talk to school about reducing non-exam extracurriculars for Jan",
+  "Daily 15-minute walk/exercise — helps focus, memory retention, and sleep quality",
+];
+
+/* ============ STATE ============ */
+const STORE = "jeeTracker2027_v3";
+const OLD_STORE = "jeeTracker2027_v2";
+const REMOVED_BASELINE = new Set([
+  "States of Matter","Hydrogen","s-Block Elements","Environmental Chemistry",
+  "The Solid State","Surface Chemistry","Isolation of Metals (Metallurgy)",
+  "Polymers","Chemistry in Everyday Life"
+]);
+let state = {
+  chapters:{}, subtopics:{}, phaseTasks:{}, phaseCollapsed:{}, examChecks:{}, errorLog:[],
+  practice:{}, revision:{}, revisionNotes:{}, criticalNotes:[], targetDate:"2027-01-21", dailyTasks:{}, activity:{}, xp:0, streak:0, lastActive:"", focusSessions:0
+};
+function normalizeState(raw){
+  const base={chapters:{},subtopics:{},phaseTasks:{},phaseCollapsed:{},examChecks:{},errorLog:[],practice:{},revision:{},revisionNotes:{},criticalNotes:[],targetDate:"2027-01-21",dailyTasks:{},activity:{},xp:0,streak:0,lastActive:"",focusSessions:0};
+  const s=Object.assign(base,raw||{});
+  s.practice=s.practice||{}; s.revision=s.revision||{}; s.revisionNotes=s.revisionNotes||{}; s.criticalNotes=Array.isArray(s.criticalNotes)?s.criticalNotes:[];
+  return s;
+}
+function loadState(){
+  try{
+    const r=localStorage.getItem(STORE);
+    if(r){ state=normalizeState(JSON.parse(r)); return; }
+    const old=localStorage.getItem(OLD_STORE);
+    if(old){ state=normalizeState(JSON.parse(old)); saveState(); }
+  }catch(e){ state=normalizeState({}); }
+}
+function saveState(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){}}
+function isActiveChapter(ch){ return !REMOVED_BASELINE.has(ch[0]); }
+
+/* ============ RENDER CHAPTERS ============ */
+function renderGroup(groupKey, containerId, progId){
+  const cont = document.getElementById(containerId);
+  if(!cont) return;
+  cont.innerHTML = "";
+  chapters[groupKey].forEach((ch,idx)=>{
+    if(!isActiveChapter(ch)) return;
+    const [name,weight,tier,subs,guide] = ch;
+    const chKey = `${groupKey}_${idx}`;
+    const chDone = !!state.chapters[chKey];
+    const subsDone = subs.every((_,si) => !!state.subtopics[`${chKey}_${si}`]);
+    const subsCount = subs.filter((_,si)=>!!state.subtopics[`${chKey}_${si}`]).length;
+    const open = !!state.phaseCollapsed[`detail_${chKey}`];
+
+    const card = document.createElement("div");
+    card.className = "ch-card";
+
+    const mainRow = document.createElement("div");
+    mainRow.className = "ch-main" + (chDone ? " done" : "");
+    mainRow.innerHTML = `
+      <div class="chk"></div>
+      <div class="ch-name">${name} <span class="pbadge">${subsCount}/${subs.length}</span></div>
+      <span class="tag ${tier}">${tier.toUpperCase()}</span>
+      <div class="ch-weight">${weight>0?weight.toFixed(2)+"%":"—"}</div>
+      <div class="ch-toggle">${open?"▾":"▸"}</div>`;
+    mainRow.querySelector(".chk, .ch-name, .tag, .ch-weight").addEventListener("click", (e)=>{
+      e.stopPropagation();
+      state.chapters[chKey] = !state.chapters[chKey];
+      // If marking done, also mark all subtopics done
+      if(state.chapters[chKey]) subs.forEach((_,si)=>{ state.subtopics[`${chKey}_${si}`]=true; });
+      saveState(); renderGroup(groupKey,containerId,progId); updateAllProgress();
+      showToast(state.chapters[chKey]?"Chapter done ✓":"Marked pending");
+    });
+    mainRow.querySelector(".ch-toggle").addEventListener("click",(e)=>{
+      e.stopPropagation();
+      state.phaseCollapsed[`detail_${chKey}`] = !open;
+      saveState(); renderGroup(groupKey,containerId,progId);
+    });
+    // main row tap = expand/collapse (but not on checkbox click)
+    mainRow.addEventListener("click",()=>{
+      state.phaseCollapsed[`detail_${chKey}`] = !open;
+      saveState(); renderGroup(groupKey,containerId,progId);
+    });
+
+    card.appendChild(mainRow);
+
+    const detail = document.createElement("div");
+    detail.className = "ch-detail" + (open?" open":"");
+
+    // Subtopics
+    const subsDiv = document.createElement("div");
+    subsDiv.className = "subtopics";
+    subs.forEach((sub,si)=>{
+      const subKey = `${chKey}_${si}`;
+      const sdone = !!state.subtopics[subKey];
+      const st = document.createElement("div");
+      st.className = "subtopic" + (sdone?" done":"");
+      st.innerHTML = `<div class="sub-chk"></div><span>${sub}</span>`;
+      st.addEventListener("click",(e)=>{
+        e.stopPropagation();
+        state.subtopics[subKey] = !state.subtopics[subKey];
+        // Auto-mark chapter done if all subtopics done
+        const allDone = subs.every((_,i)=>!!state.subtopics[`${chKey}_${i}`]);
+        if(allDone) state.chapters[chKey]=true;
+        else state.chapters[chKey]=false;
+        saveState(); renderGroup(groupKey,containerId,progId); updateAllProgress();
+      });
+      subsDiv.appendChild(st);
+    });
+    detail.appendChild(subsDiv);
+
+    // Study guide
+    const sg = document.createElement("div");
+    sg.className = "study-guide";
+    sg.innerHTML = `
+      <div class="sg-row"><span class="sg-label">How to study</span><span class="sg-text">${guide.how}</span></div>
+      <div class="sg-row"><span class="sg-label">Time needed</span><span class="sg-text">${guide.time}</span></div>
+      <div class="sg-row"><span class="sg-label">Books</span><div class="sg-pills">${guide.books.map(b=>`<span class="pill bk">📚 ${b}</span>`).join("")}</div></div>
+      <div class="sg-row"><span class="sg-label">Video lectures</span><div class="sg-pills">${guide.yt.map(v=>`<span class="pill yt">▶ ${v}</span>`).join("")}</div></div>
+      <div class="sg-row"><div class="tip-box"><b>💡 JEE Tip:</b> ${guide.tip}</div></div>`;
+    detail.appendChild(sg);
+
+    // Practice + revision controls
+    const practiceKey = chKey;
+    const tierTarget = tier==="high" ? 3 : tier==="mid" ? 2 : 1;
+    const pyqTarget = tier==="high" ? 30 : tier==="mid" ? 20 : 10;
+    const pr = state.practice[practiceKey] || {pyq:0, tests:0, scores:[]};
+    const rv = state.revision[practiceKey] || {sheet:false, flash:false, retest:false};
+    const rp = document.createElement("div");
+    rp.className="study-guide";
+    rp.innerHTML=`
+      <div class="sg-row"><span class="sg-label">Practice target</span>
+        <span class="sg-text"><b>${pyqTarget} PYQs</b> + <b>${tierTarget} topic tests</b> + retest after 7–14 days.</span></div>
+      <div class="practice-actions" style="margin-top:8px">
+        <button class="p-action ${pr.pyq>=pyqTarget?"done":""}" data-act="pyq">PYQs ${Math.min(pr.pyq,pyqTarget)}/${pyqTarget}</button>
+        <button class="p-action ${pr.tests>=tierTarget?"done":""}" data-act="test">Tests ${Math.min(pr.tests,tierTarget)}/${tierTarget}</button>
+        <button class="p-action ${rv.sheet?"done":""}" data-act="sheet">Revision sheet</button>
+        <button class="p-action ${rv.retest?"done":""}" data-act="retest">7–14d retest</button>
+      </div>
+      <div class="revision-panel">
+        <div class="revision-checks">
+          <button class="mini-check ${rv.sheet?"done":""}" data-rv="sheet">1-page sheet</button>
+          <button class="mini-check ${rv.flash?"done":""}" data-rv="flash">Flashcards / reactions</button>
+          <button class="mini-check ${rv.retest?"done":""}" data-rv="retest">Retest passed</button>
+        </div>
+        <textarea class="rev-note" placeholder="Revision sheet notes: formulas / reactions / traps / starred PYQs / mistakes">${esc(state.revisionNotes[practiceKey]||"")}</textarea>
+      </div>`;
+    rp.querySelector('[data-act="pyq"]').addEventListener("click",e=>{
+      e.stopPropagation();
+      const x=state.practice[practiceKey]||{pyq:0,tests:0,scores:[]};
+      x.pyq = x.pyq>=pyqTarget ? 0 : pyqTarget; state.practice[practiceKey]=x; saveState(); renderGroup(groupKey,containerId,progId); updateAllProgress();
+    });
+    rp.querySelector('[data-act="test"]').addEventListener("click",e=>{
+      e.stopPropagation();
+      const x=state.practice[practiceKey]||{pyq:0,tests:0,scores:[]};
+      x.tests = x.tests>=tierTarget ? 0 : tierTarget; state.practice[practiceKey]=x; saveState(); renderGroup(groupKey,containerId,progId); updateAllProgress();
+    });
+    rp.querySelectorAll('[data-rv]').forEach(btn=>btn.addEventListener("click",e=>{
+      e.stopPropagation(); const k=btn.dataset.rv; const x=state.revision[practiceKey]||{sheet:false,flash:false,retest:false};
+      x[k]=!x[k]; state.revision[practiceKey]=x; saveState(); renderGroup(groupKey,containerId,progId); updateAllProgress();
+    }));
+    rp.querySelector(".rev-note").addEventListener("click",e=>e.stopPropagation());
+    rp.querySelector(".rev-note").addEventListener("change",e=>{state.revisionNotes[practiceKey]=e.target.value;saveState();showToast("Revision sheet saved ✓");});
+    detail.appendChild(rp);
+
+    card.appendChild(detail);
+    cont.appendChild(card);
+  });
+  updateGroupLabel(groupKey, progId);
+}
+function updateGroupLabel(groupKey, progId){
+  const active = chapters[groupKey].map((ch,i)=>[ch,i]).filter(([ch])=>isActiveChapter(ch));
+  const total = active.length;
+  const done = active.filter(([_,i])=>!!state.chapters[`${groupKey}_${i}`]).length;
+  const el = document.getElementById(progId);
+  if(el) el.textContent = `${done}/${total}`;
+}
+
+/* ============ PHASES ============ */
+function renderPhases(){
+  const cont = document.getElementById("phaseContainer");
+  if(!cont) return;
+  cont.innerHTML = "";
+  phaseData.forEach(phase=>{
+    const collapsed = !!state.phaseCollapsed[phase.id];
+    const dc = phase.tasks.filter((_,i)=>state.phaseTasks[`${phase.id}_${i}`]).length;
+    const allDone = dc===phase.tasks.length;
+    const div = document.createElement("div");
+    div.className="phase";
+    div.innerHTML=`
+      <div class="phase-head">
+        <span><span class="pstatus">${allDone?"DONE":dc+"/"+phase.tasks.length}</span>${phase.name}</span>
+        <span class="pdates">${phase.dates}</span>
+      </div>
+      <div class="phase-body" style="display:${collapsed?"none":"block"}">
+        <div class="box green" style="margin-bottom:10px"><b>Target:</b> ${phase.target}</div>
+        ${phase.tasks.map((t,i)=>{
+          const tk=`${phase.id}_${i}`;
+          const d=!!state.phaseTasks[tk];
+          return `<div class="ptask ${d?"done":""}" data-tk="${tk}">
+            <div class="chk" style="${d?"background:#2f7d4f;border-color:#2f7d4f;":""}">${d?"✓":""}</div>
+            <span>${t}</span></div>`;
+        }).join("")}
+      </div>`;
+    div.querySelector(".phase-head").addEventListener("click",()=>{
+      state.phaseCollapsed[phase.id]=!collapsed; saveState(); renderPhases();
+    });
+    div.querySelectorAll(".ptask").forEach(el=>{
+      el.addEventListener("click",e=>{
+        e.stopPropagation();
+        const tk=el.getAttribute("data-tk");
+        state.phaseTasks[tk]=!state.phaseTasks[tk];
+        saveState(); renderPhases(); updateAllProgress();
+      });
+    });
+    cont.appendChild(div);
+  });
+}
+
+/* ============ CHECKLISTS ============ */
+function renderChecklist(listId, prefix, tasks){
+  const cont=document.getElementById(listId);
+  if(!cont)return;
+  cont.innerHTML="";
+  tasks.forEach((t,i)=>{
+    const key=`${prefix}_${i}`;
+    const done=!!state.examChecks[key];
+    const div=document.createElement("div");
+    div.className="ck-item"+(done?" done":"");
+    div.innerHTML=`<div class="chk" style="${done?"background:#2f7d4f;border-color:#2f7d4f;":""}">${done?"✓":""}</div><span>${t}</span>`;
+    div.addEventListener("click",()=>{state.examChecks[key]=!state.examChecks[key];saveState();renderChecklist(listId,prefix,tasks);});
+    cont.appendChild(div);
+  });
+}
+
+/* ============ PRACTICE LAB ============ */
+let practiceFilter="all";
+function renderPractice(){
+  const cont=document.getElementById("practiceContainer"); if(!cont)return;
+  cont.innerHTML="";
+  const groups=[
+    ["physics",["phy11","phy12"]],
+    ["chemistry",["chem11","chem12"]],
+    ["maths",["math11","math12"]]
+  ];
+  let rows=[];
+  groups.forEach(([subject,gs])=>gs.forEach(g=>chapters[g].forEach((ch,i)=>{
+    if(!isActiveChapter(ch))return;
+    const [name,weight,tier]=ch, key=`${g}_${i}`;
+    const pr=state.practice[key]||{pyq:0,tests:0,scores:[]};
+    const rv=state.revision[key]||{};
+    const pyqTarget=tier==="high"?30:tier==="mid"?20:10, testTarget=tier==="high"?3:tier==="mid"?2:1;
+    const pending=!state.chapters[key] || (pr.pyq||0)<pyqTarget || (pr.tests||0)<testTarget || !rv.sheet;
+    const filterOk=practiceFilter==="all" || practiceFilter===subject || practiceFilter===tier || (practiceFilter==="pending"&&pending);
+    if(filterOk)rows.push({subject,g,i,ch,key,pr,rv,pyqTarget,testTarget,pending});
+  })));
+  if(!rows.length){cont.innerHTML='<div class="empty-state"><div class="ei">🎯</div><p>No chapters match this filter.</p></div>';return;}
+  rows.forEach(r=>{
+    const [name,weight,tier]=r.ch;
+    const div=document.createElement("div"); div.className="practice-card";
+    div.innerHTML=`
+      <div class="practice-card-head">
+        <span class="tag ${tier}">${tier.toUpperCase()}</span>
+        <span class="pc-name">${name}</span>
+        <span class="pc-meta">${r.subject} · ${weight>0?weight.toFixed(1)+"%":""}</span>
+      </div>
+      <div class="practice-actions">
+        <button class="p-action ${state.chapters[r.key]?"done":""}" data-go="theory">${state.chapters[r.key]?"✓ Theory complete":"Theory / subtopics"}</button>
+        <button class="p-action ${(r.pr.pyq||0)>=r.pyqTarget?"done":""}" data-go="pyq">PYQs ${(r.pr.pyq||0)>=r.pyqTarget?"✓":(r.pr.pyq||0)+"/"+r.pyqTarget}</button>
+        <button class="p-action ${(r.pr.tests||0)>=r.testTarget?"done":""}" data-go="test">Topic tests ${(r.pr.tests||0)>=r.testTarget?"✓":(r.pr.tests||0)+"/"+r.testTarget}</button>
+        <button class="p-action ${r.rv.sheet?"done":""}" data-go="sheet">${r.rv.sheet?"✓ Revision sheet":"Make revision sheet"}</button>
+      </div>
+      <div class="p-score">
+        <input placeholder="Latest test score (e.g. 18/25)" value="${esc((r.pr.scores||[]).slice(-1)[0]||"")}">
+        <button data-save-score>Save score</button>
+      </div>`;
+    div.querySelector('[data-go="theory"]').addEventListener("click",()=>{showView(r.subject==="physics"?"physics":r.subject==="chemistry"?"chemistry":"maths");});
+    div.querySelector('[data-go="pyq"]').addEventListener("click",()=>{
+      const x=state.practice[r.key]||{pyq:0,tests:0,scores:[]}; x.pyq=x.pyq>=r.pyqTarget?0:r.pyqTarget; state.practice[r.key]=x; saveState(); renderPractice(); updateAllProgress();
+    });
+    div.querySelector('[data-go="test"]').addEventListener("click",()=>{
+      const x=state.practice[r.key]||{pyq:0,tests:0,scores:[]}; x.tests=x.tests>=r.testTarget?0:r.testTarget; state.practice[r.key]=x; saveState(); renderPractice(); updateAllProgress();
+    });
+    div.querySelector('[data-go="sheet"]').addEventListener("click",()=>{
+      const x=state.revision[r.key]||{sheet:false,flash:false,retest:false}; x.sheet=!x.sheet; state.revision[r.key]=x; saveState(); renderPractice(); updateAllProgress();
+    });
+    div.querySelector('[data-save-score]').addEventListener("click",()=>{
+      const val=div.querySelector("input").value.trim(); if(!val)return;
+      const x=state.practice[r.key]||{pyq:0,tests:0,scores:[]}; x.scores=x.scores||[]; x.scores.push(val); state.practice[r.key]=x; saveState(); showToast("Test score saved ✓");
+    });
+    cont.appendChild(div);
+  });
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".filter-btn"); if(!b)return;
+  document.querySelectorAll(".filter-btn").forEach(x=>x.classList.remove("active")); b.classList.add("active");
+  practiceFilter=b.dataset.filter; renderPractice();
+});
+
+/* ============ ERROR LOG ============ */
+function renderErrorLog(){
+  const cont=document.getElementById("logEntries");
+  if(!cont)return;
+  if(!state.errorLog.length){cont.innerHTML=`<div class="empty-state"><div class="ei">📝</div><p>No entries yet. Add one after your next mock or topic test.</p></div>`;return;}
+  cont.innerHTML="";
+  state.errorLog.slice().reverse().forEach(entry=>{
+    const ri=state.errorLog.indexOf(entry);
+    const div=document.createElement("div");
+    div.className="log-entry";
+    div.innerHTML=`<span class="del" data-i="${ri}">&times;</span>
+      <b>${esc(entry.chapter)}</b>
+      <div class="reason">Reason: ${esc(entry.reason)}</div>
+      ${entry.fix?`<div class="fix">Fix: ${esc(entry.fix)}</div>`:""}
+      ${entry.score?`<div class="score-badge">📊 ${esc(entry.score)}</div>`:""}
+      <div class="meta">${entry.date}</div>`;
+    div.querySelector(".del").addEventListener("click",()=>{state.errorLog.splice(ri,1);saveState();renderErrorLog();updateAllProgress();});
+    cont.appendChild(div);
+  });
+}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function addLogEntry(){
+  const ch=document.getElementById("logChapter").value.trim();
+  if(!ch){showToast("Add a chapter/subtopic name");return;}
+  state.errorLog.push({
+    chapter:ch, reason:document.getElementById("logReason").value,
+    fix:document.getElementById("logFix").value.trim(),
+    score:document.getElementById("logScore").value.trim(),
+    date:new Date().toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})
+  });
+  saveState();
+  ["logChapter","logFix","logScore"].forEach(id=>document.getElementById(id).value="");
+  renderErrorLog(); updateAllProgress(); showToast("Added to error log ✓");
+}
+
+/* ============ PROGRESS ============ */
+function updateAllProgress(){
+  const groups = {phy:["phy11","phy12"], chem:["chem11","chem12"], math:["math11","math12"]};
+  let totalCh=0,doneCh=0,totalSub=0,doneSub=0,highTotal=0,highDone=0;
+  let totalPYQ=0,donePYQ=0,totalTests=0,doneTests=0,totalSheets=0,doneSheets=0;
+
+  Object.entries(groups).forEach(([subj,gs])=>{
+    let sTotal=0,sDone=0;
+    gs.forEach(g=>{
+      chapters[g].forEach((ch,i)=>{
+        if(!isActiveChapter(ch)) return;
+        totalCh++; sTotal++;
+        if(state.chapters[`${g}_${i}`]){doneCh++;sDone++;}
+        if(ch[2]==="high"){highTotal++;if(state.chapters[`${g}_${i}`])highDone++;}
+        ch[3].forEach((_,si)=>{
+          totalSub++;
+          if(state.subtopics[`${g}_${i}_${si}`])doneSub++;
+        });
+        const tier=ch[2], pyqTarget=tier==="high"?30:tier==="mid"?20:10, testTarget=tier==="high"?3:tier==="mid"?2:1;
+        const pr=state.practice[`${g}_${i}`]||{pyq:0,tests:0};
+        const rv=state.revision[`${g}_${i}`]||{};
+        totalPYQ+=pyqTarget; donePYQ+=Math.min(pr.pyq||0,pyqTarget);
+        totalTests+=testTarget; doneTests+=Math.min(pr.tests||0,testTarget);
+        totalSheets++; if(rv.sheet)doneSheets++;
+      });
+    });
+    const pct=sTotal?Math.round(sDone/sTotal*100):0;
+    const bar=document.getElementById(`bar-${subj}`); if(bar)bar.style.width=pct+"%";
+    const mini=document.getElementById(`dp-${subj}`); if(mini)mini.textContent=`${sDone}/${sTotal}`;
+  });
+
+  document.getElementById("dashOverall").textContent=totalCh?Math.round(doneCh/totalCh*100)+"%":"0%";
+  document.getElementById("dashHigh").textContent=highTotal?Math.round(highDone/highTotal*100)+"%":"0%";
+  document.getElementById("dashSub").textContent=totalSub?Math.round(doneSub/totalSub*100)+"%":"0%";
+  document.getElementById("dashLog").textContent=state.errorLog.length;
+
+  [["phy11","gp-phy11"],["phy12","gp-phy12"],["chem11","gp-chem11"],["chem12","gp-chem12"],["math11","gp-math11"],["math12","gp-math12"]].forEach(([g,id])=>updateGroupLabel(g,id));
+
+  let pt=0,pd=0;
+  phaseData.forEach(p=>p.tasks.forEach((_,i)=>{pt++;if(state.phaseTasks[`${p.id}_${i}`])pd++;}));
+  const pb=document.getElementById("bar-phase"); if(pb)pb.style.width=(pt?Math.round(pd/pt*100):0)+"%";
+  const dp=document.getElementById("dp-phase"); if(dp)dp.textContent=`${pd}/${pt}`;
+
+  const exam=new Date(state.targetDate+"T23:59:59");
+  const now=new Date();
+  const days=Math.ceil((exam-now)/(1000*60*60*24));
+  const dl=document.getElementById("daysLeft"); if(dl)dl.textContent=days>0?days+" days":"TARGET REACHED";
+  const hsDays=document.getElementById("hs-days"); if(hsDays)hsDays.textContent=days>0?days:"🎯";
+  const hsDone=document.getElementById("hs-done"); if(hsDone)hsDone.textContent=totalCh?Math.round(doneCh/totalCh*100)+"%":"0%";
+  const hsHigh=document.getElementById("hs-high"); if(hsHigh)hsHigh.textContent=highTotal?Math.round(highDone/highTotal*100)+"%":"0%";
+
+  const ptEl=document.getElementById("practiceTheory"); if(ptEl)ptEl.textContent=totalCh?Math.round(doneCh/totalCh*100)+"%":"0%";
+  const ttEl=document.getElementById("practiceTests"); if(ttEl)ttEl.textContent=totalTests?Math.round(doneTests/totalTests*100)+"%":"0%";
+  const rsEl=document.getElementById("practiceRevision"); if(rsEl)rsEl.textContent=totalSheets?Math.round(doneSheets/totalSheets*100)+"%":"0%";
+  const pyEl=document.getElementById("practicePYQ"); if(pyEl)pyEl.textContent=totalPYQ?Math.round(donePYQ/totalPYQ*100)+"%":"0%";
+}
+
+/* ============ NAV ============ */
+function showView(v){
+  document.querySelectorAll(".view").forEach(el=>el.classList.remove("active"));
+  document.getElementById("view-"+v).classList.add("active");
+  document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
+  document.querySelector(`nav button[data-view="${v}"]`).classList.add("active");
+  window.scrollTo(0,0);
+}
+document.getElementById("navbar").addEventListener("click",e=>{
+  const b=e.target.closest("button");
+  if(b)showView(b.getAttribute("data-view"));
+});
+
+/* ============ TOAST ============ */
+let tt;
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),1700);
+}
+
+/* ============ EXPORT/IMPORT/RESET ============ */
+function exportData(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");a.href=url;
+  a.download="jee2027-tracker-"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  showToast("Backup downloaded ✓");
+}
+function importData(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      state=Object.assign({chapters:{},subtopics:{},phaseTasks:{},phaseCollapsed:{},examChecks:{},errorLog:[]},JSON.parse(ev.target.result));
+      saveState();renderEverything();showToast("Data imported ✓");
+    }catch{showToast("Could not read that file");}
+  };
+  reader.readAsText(file);e.target.value="";
+}
+function confirmReset(){
+  if(confirm("Erase ALL progress — chapters, subtopics, phase tasks, error log? Cannot be undone.")){
+    state={chapters:{},subtopics:{},phaseTasks:{},phaseCollapsed:{},examChecks:{},errorLog:[],practice:{},revision:{},revisionNotes:{},criticalNotes:[],targetDate:"2027-01-21"};
+    saveState();renderEverything();showToast("Reset complete");
+  }
+}
+
+
+/* ============ CRITICAL NOTES ============ */
+function addCriticalNote(){
+  const title=document.getElementById('criticalTitle').value.trim();
+  const body=document.getElementById('criticalBody').value.trim();
+  if(!title && !body){showToast('Write something first');return;}
+  state.criticalNotes=state.criticalNotes||[];
+  state.criticalNotes.unshift({id:Date.now(),title:title||'Untitled note',body,tag:document.getElementById('criticalTag').value,date:new Date().toLocaleString('en-IN',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})});
+  saveState(); document.getElementById('criticalTitle').value=''; document.getElementById('criticalBody').value=''; renderCriticalNotes(); showToast('Critical note saved ✓');
+}
+function renderCriticalNotes(){
+  const list=document.getElementById('criticalNotesList'); if(!list)return;
+  const notes=state.criticalNotes||[]; document.getElementById('notesCount').textContent=`${notes.length} ${notes.length===1?'note':'notes'}`;
+  if(!notes.length){list.innerHTML='<div class="empty-notes">📌<br><br>No critical notes yet.<br>Add something future-you must remember.</div>';return;}
+  list.innerHTML=notes.map(n=>`<article class="critical-note"><button class="delete-note" onclick="deleteCriticalNote(${n.id})" aria-label="Delete note">×</button><h4>${esc(n.title)}</h4>${n.body?`<p>${esc(n.body)}</p>`:''}<div class="critical-meta"><span class="note-tag">${esc(n.tag)}</span><span>${esc(n.date)}</span></div></article>`).join('');
+}
+function deleteCriticalNote(id){state.criticalNotes=(state.criticalNotes||[]).filter(n=>n.id!==id);saveState();renderCriticalNotes();showToast('Note deleted');}
+
+/* ============ COUNTDOWN ============ */
+let countdownTimer=null;
+function prettyDate(v){if(!v)return '—';const d=new Date(v+'T00:00:00');return d.toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});}
+function initCountdown(){
+  const input=document.getElementById('countdownDate'); if(!input)return;
+  input.value=state.targetDate||'2027-01-21';
+  input.onchange=()=>{state.targetDate=input.value;saveState();initTargetDate();updateCountdown();updateAllProgress();showToast('Countdown target updated ✓');};
+  if(countdownTimer)clearInterval(countdownTimer); updateCountdown(); countdownTimer=setInterval(updateCountdown,1000);
+}
+function updateCountdown(){
+  const target=(state.targetDate||'2027-01-21')+'T23:59:59'; const diff=new Date(target)-new Date();
+  const d=document.getElementById('countdownDate');if(d&&d.value!==state.targetDate)d.value=state.targetDate;
+  const label=document.getElementById('countdownTargetLabel');if(label)label.textContent='JEE Main 2027 — Planning Target';
+  const pretty=document.getElementById('countdownPretty');if(pretty)pretty.textContent=prettyDate(state.targetDate);
+  const today=document.getElementById('countdownToday');if(today)today.textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
+  const status=document.getElementById('countdownStatus');
+  if(diff<=0){['cdDays','cdHours','cdMinutes','cdSeconds'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=id==='cdDays'?'0':'00'});if(status)status.textContent='Target reached';return;}
+  const total=Math.floor(diff/1000), days=Math.floor(total/86400), hours=Math.floor((total%86400)/3600), mins=Math.floor((total%3600)/60), secs=total%60;
+  const vals={cdDays:String(days),cdHours:String(hours).padStart(2,'0'),cdMinutes:String(mins).padStart(2,'0'),cdSeconds:String(secs).padStart(2,'0')};Object.entries(vals).forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.textContent=v;});
+  if(status)status.textContent=days<=30?'Final month mode':days<=90?'Revision window':'Preparation window';
+}
+function syncCountdownToSettings(){initCountdown();showToast('Countdown synced ✓');}
+
+
+/* ============ NEXT LEVEL ENGINE ============ */
+function dayKey(d=new Date()){return d.toISOString().slice(0,10)}
+function ensureDaily(){
+  const k=dayKey();
+  if(!state.dailyTasks[k]){
+    state.dailyTasks[k]=[
+      {id:"study",text:"Complete one focused theory block",done:false},
+      {id:"pyq",text:"Solve 15–25 quality PYQs",done:false},
+      {id:"recall",text:"Do a 10-minute active-recall revision",done:false},
+      {id:"review",text:"Review yesterday's mistakes",done:false}
+    ];
+    saveState();
+  }
+  return state.dailyTasks[k];
+}
+function earnXP(n){
+  state.xp=(state.xp||0)+n;
+  const k=dayKey(); state.activity=state.activity||{}; state.activity[k]=(state.activity[k]||0)+n;
+  updateStreak(); saveState(); updateNextLevelUI(); updateTodayUI();
+}
+function updateStreak(){
+  state.activity=state.activity||{};
+  const keys=Object.keys(state.activity).sort().reverse();
+  let streak=0, d=new Date();
+  for(let i=0;i<keys.length;i++){
+    const expected=dayKey(new Date(d.getTime()-i*86400000));
+    if(keys.includes(expected)) streak++; else if(i===0) continue; else break;
+  }
+  state.streak=streak;
+  state.lastActive=dayKey();
+}
+function toggleTodayTask(id){
+  const tasks=ensureDaily(), t=tasks.find(x=>x.id===id); if(!t)return;
+  if(!t.done){t.done=true;earnXP(25);} else {t.done=false;state.xp=Math.max(0,(state.xp||0)-25);saveState();}
+  renderTodayTasks(); updateTodayUI(); updateNextLevelUI();
+}
+function renderTodayTasks(){
+  const el=document.getElementById("todayTaskList"); if(!el)return;
+  el.innerHTML=ensureDaily().map(t=>`<div class="task-row ${t.done?'done':''}" onclick="toggleTodayTask('${t.id}')"><div class="task-box"></div><div class="task-text">${t.text}</div></div>`).join("");
+}
+function updateNextLevelUI(){
+  const xp=state.xp||0, level=Math.floor(xp/100)+1, into=xp%100;
+  const ids=["dashXP","todayXP"]; ids.forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=xp});
+  const lvl=document.getElementById("todayLevel");if(lvl)lvl.textContent=level;
+  const tx=document.getElementById("dashLevelText");if(tx)tx.textContent=`Level ${level} · ${into}/100 XP`;
+  const bar=document.getElementById("dashXPBar");if(bar)bar.style.width=into+"%";
+  const st=document.getElementById("dashStreak");if(st)st.textContent=state.streak||0;
+  const stb=document.getElementById("dashStreakBig");if(stb)stb.textContent=(state.streak||0)+" day"+((state.streak||0)===1?"":"s");
+}
+function updateTodayUI(){
+  const tasks=ensureDaily(), done=tasks.filter(t=>t.done).length, pct=Math.round(done/tasks.length*100);
+  ["todayDone","dashTasks"].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=done});
+  const rem=document.getElementById("todayRemain");if(rem)rem.textContent=tasks.length-done;
+  ["todayBar","dashDayBar"].forEach(id=>{const e=document.getElementById(id);if(e)e.style.width=pct+"%"});
+  const status=document.getElementById("todayStatus");if(status)status.textContent=pct+"%";
+  const date=new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"});
+  ["todayDateFull","dashTodayDate"].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=date});
+  const title=document.getElementById("dashTodayTitle");if(title)title.textContent=pct===100?"Mission complete. 🔥":"Build the streak.";
+  const sub=document.getElementById("dashTodaySub");if(sub)sub.textContent=pct===100?"You showed up today. Do a light review or stop.":"Your job is execution, not perfection.";
+  const weak=document.getElementById("dashWeak");if(weak)weak.textContent="Review";
+  const sugg=document.getElementById("todaySuggestion");
+  if(sugg)sugg.innerHTML=pct<50?"<b>Recommended:</b> Do the hardest pending chapter first, then 15–25 PYQs. Finish with active recall.":"<b>Recommended:</b> Finish remaining tasks, review your error log, then do a short revision sheet.";
+}
+function renderHeatmap(){
+  const el=document.getElementById("heatmap");if(!el)return;
+  const now=new Date(); let out="";
+  for(let i=55;i>=0;i--){
+    const d=new Date(now.getTime()-i*86400000), k=dayKey(d), v=state.activity?.[k]||0;
+    const cls=v>=100?"l4":v>=50?"l3":v>=25?"l2":v>0?"l1":"";
+    out+=`<div class="heat ${cls}" title="${k}: ${v} XP"></div>`;
+  }
+  el.innerHTML=out;
+}
+const achievements=[
+ ["🔥","First Fire","Earn your first XP",()=>state.xp>0],
+ ["📚","Chapter Crusher","Complete 5 chapters",()=>Object.values(state.chapters||{}).filter(Boolean).length>=5],
+ ["🎯","PYQ Hunter","Log 100 PYQs",()=>Object.values(state.practice||{}).reduce((a,x)=>a+(x.pyq||0),0)>=100],
+ ["🧠","Test Taker","Complete 10 tests",()=>Object.values(state.practice||{}).reduce((a,x)=>a+(x.tests||0),0)>=10],
+ ["📝","Error Scientist","Log 10 mistakes",()=>state.errorLog.length>=10],
+ ["⏱️","Deep Worker","Complete 5 focus sessions",()=>state.focusSessions>=5]
+];
+function renderAchievements(){
+  const el=document.getElementById("achievementGrid");if(!el)return;
+  el.innerHTML=achievements.map(a=>`<div class="achievement ${a[3]()?'unlocked':''}"><div class="medal">${a[0]}</div><b>${a[1]}</b><span>${a[2]}</span></div>`).join("");
+}
+let focusSeconds=1500, focusTimer=null, focusMode=25;
+function setFocusMode(min,btn){
+  focusMode=min;focusSeconds=min*60;document.getElementById("focusTime").textContent=String(min).padStart(2,"0")+":00";
+  document.querySelectorAll(".mode-row button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");
+}
+function updateFocus(){
+  const m=Math.floor(focusSeconds/60),s=focusSeconds%60;
+  const el=document.getElementById("focusTime");if(el)el.textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+function toggleFocus(){
+  const btn=document.getElementById("focusStart");
+  if(focusTimer){clearInterval(focusTimer);focusTimer=null;btn.textContent="Resume";return;}
+  btn.textContent="Pause";
+  focusTimer=setInterval(()=>{
+    focusSeconds--;updateFocus();
+    if(focusSeconds<=0){
+      clearInterval(focusTimer);focusTimer=null;btn.textContent="Start";
+      state.focusSessions=(state.focusSessions||0)+1;earnXP(25);saveState();renderAchievements();
+      showToast("Focus complete! +25 XP 🔥");
+      focusSeconds=focusMode*60;updateFocus();
+    }
+  },1000);
+}
+function resetFocus(){if(focusTimer)clearInterval(focusTimer);focusTimer=null;focusSeconds=focusMode*60;updateFocus();const b=document.getElementById("focusStart");if(b)b.textContent="Start";}
+function nextLevelInit(){updateStreak();ensureDaily();updateNextLevelUI();updateTodayUI();renderTodayTasks();renderHeatmap();renderAchievements();}
+
+/* ============ END NEXT LEVEL ENGINE ============ */
+
+
+/* ============ INIT ============ */
+function initTargetDate(){
+  const el=document.getElementById("targetDate"); if(!el)return;
+  el.value=state.targetDate||"2027-01-21";
+  el.onchange=()=>{state.targetDate=el.value;saveState();updateAllProgress();showToast("Planning date updated ✓");};
+}
+function renderEverything(){
+  renderGroup("phy11","list-phy11","gp-phy11");
+  renderGroup("phy12","list-phy12","gp-phy12");
+  renderGroup("chem11","list-chem11","gp-chem11");
+  renderGroup("chem12","list-chem12","gp-chem12");
+  renderGroup("math11","list-math11","gp-math11");
+  renderGroup("math12","list-math12","gp-math12");
+  renderPhases();
+  renderPractice();
+  renderCriticalNotes();
+  initTargetDate();
+  initCountdown();
+  renderChecklist("examHallList","hall",examHallTasks);
+  renderChecklist("negMarkList","neg",negMarkTasks);
+  renderChecklist("finalMonthList","month",finalMonthTasks);
+  renderErrorLog();
+  updateAllProgress();
+}
+
+loadState();
+renderEverything();
+nextLevelInit();
+</script>
+</body></html>
